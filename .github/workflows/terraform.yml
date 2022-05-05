@@ -1,0 +1,102 @@
+name: Terraform
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "terraform/**"
+      - ".github/**"
+  pull_request:
+    paths:
+      - "terraform/**"
+      - ".github/**"
+
+env:
+  TF_VERSION: 1.1.8
+  TFC_WORKSPACE: xxxx
+
+jobs:
+  terraform:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: hmarr/debug-action@v2
+      - uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          cli_config_credentials_token: ${{ secrets.TFC_TEAM_TOKEN }}
+
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check
+        working-directory: ./terraform
+
+      - name: Terraform Variables
+        run: |
+          cat >"versions.tf" <<EOF
+          terraform {
+            backend "remote" {
+              hostname     = "app.terraform.io"
+              organization = "bcgov"
+              workspaces {
+                name = "${{ env.TFC_WORKSPACE }}"
+              }
+            }
+          }
+          EOF
+
+          cat >"ci.auto.tfvars" <<EOF
+          c6af30_team_sysdig_monitor_api_token="${{ secrets.C6AF30_TEAM_SYSDIG_MONITOR_API_TOKEN }}"
+          c6af30_pv_sysdig_monitor_api_token="${{ secrets.C6AF30_PV_SYSDIG_MONITOR_API_TOKEN }}"
+          EOF
+
+        working-directory: ./terraform
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -upgrade
+        working-directory: ./terraform
+
+      - name: Terraform Plan
+        id: plan
+        if: github.event_name == 'pull_request'
+        run: terraform plan -no-color
+        working-directory: ./terraform
+        continue-on-error: true
+
+      - uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            <details><summary>Show Plan</summary>
+
+            \`\`\`${process.env.PLAN}\`\`\`
+
+            </details>
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      - name: Terraform Apply
+        if: github.event_name == 'push'
+        run: terraform apply -auto-approve
+        working-directory: ./terraform
