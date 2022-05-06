@@ -1,0 +1,23 @@
+c6af30:
+  licensePlate: c6af30
+  users:
+    - name: sso.manager@gov.bc.ca
+      role: ROLE_TEAM_MANAGER
+    - name: sso.editor@gov.bc.ca
+      role: ROLE_TEAM_EDIT
+    - name: sso.standard@gov.bc.ca
+      role: ROLE_TEAM_STANDARD
+    - name: sso.reader@gov.bc.ca
+      role: ROLE_TEAM_READ
+
+eb75ad:
+  licensePlate: eb75ad
+  users:
+    - name: sso.manager@gov.bc.ca
+      role: ROLE_TEAM_MANAGER
+    - name: sso.editor@gov.bc.ca
+      role: ROLE_TEAM_EDIT
+    - name: sso.standard@gov.bc.ca
+      role: ROLE_TEAM_STANDARD
+    - name: sso.reader@gov.bc.ca
+      role: ROLE_TEAM_READ

@@ -1,0 +1,9 @@
+dependencies:
+- name: sysdig
+  repository: https://bcgov.github.io/sso-helm-charts
+  version: 0.1.0
+- name: sysdig
+  repository: https://bcgov.github.io/sso-helm-charts
+  version: 0.1.0
+digest: sha256:687b3b3ae8bcc4f5c9778e921ec9c41299c7446eddb3f22b2e90674a369c370b
+generated: "2022-05-05T16:54:32.9656443-07:00"
