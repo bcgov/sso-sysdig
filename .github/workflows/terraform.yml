@@ -36,21 +36,22 @@ jobs:
 
       - name: Terraform Variables
         run: |
-          cat >"versions.tf" <<EOF
+          cat >"config.tf" <<EOF
           terraform {
-            backend "remote" {
-              hostname     = "app.terraform.io"
-              organization = "bcgov"
-              workspaces {
-                name = "${{ env.TFC_WORKSPACE }}"
-              }
+            backend "s3" {
+              bucket     = "xgr00q-prod-sysdig"
+              key        = "sysdig"
+              region     = "ca-central-1"
+              access_key = "${{ secrets.TF_ACCESS_KEY }}"
+              secret_key = "${{ secrets.TF_SECRET_KEY }}"
+              role_arn   = "${{ secrets.TF_ROLE_ARN }}"
             }
           }
           EOF
 
           cat >"ci.auto.tfvars" <<EOF
           c6af30_team_sysdig_monitor_api_token="${{ secrets.C6AF30_TEAM_SYSDIG_MONITOR_API_TOKEN }}"
-          c6af30_pv_sysdig_monitor_api_token="${{ secrets.C6AF30_PV_SYSDIG_MONITOR_API_TOKEN }}"
+          eb75ad_team_sysdig_monitor_api_token="${{ secrets.EB75AD_TEAM_SYSDIG_MONITOR_API_TOKEN }}"
           EOF
 
         working-directory: ./terraform
