@@ -1,4 +1,4 @@
-name: Terraform
+name: Provision Sysdig Configuration via Terraform
 
 on:
   push:
@@ -14,7 +14,6 @@ on:
 
 env:
   TF_VERSION: 1.1.8
-  TFC_WORKSPACE: xxxx
 
 jobs:
   terraform:
