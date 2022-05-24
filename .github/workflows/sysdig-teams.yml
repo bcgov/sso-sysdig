@@ -1,0 +1,40 @@
+name: Deploy Sysdig Teams via Helm Chart
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "sysdig-teams/**"
+      - ".github/workflows/sysdig-teams.yml"
+
+jobs:
+  deploy-sysdig-teams:
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        include:
+          - host: https://api.gold.devops.gov.bc.ca:6443
+            plate: c6af30
+            token: ${{ secrets.GOLD_C6AF30_OPENSHIFT_TOKEN }}
+          - host: https://api.gold.devops.gov.bc.ca:6443
+            plate: eb75ad
+            token: ${{ secrets.GOLD_EB75AD_OPENSHIFT_TOKEN }}
+
+    steps:
+      - uses: hmarr/debug-action@v2
+      - uses: actions/checkout@v2
+
+      - name: Authenticate and set context
+        uses: redhat-actions/oc-login@v1
+        with:
+          openshift_server_url: ${{ matrix.host }}
+          openshift_token: ${{ matrix.token }}
+          namespace: ${{ matrix.plate }}-tools
+          insecure_skip_tls_verify: true
+
+      - name: Deploy Sysdig Team via Helm chart
+        run: ./deploy-${{ matrix.plate }}.sh
+        working-directory: ./sysdig-teams
