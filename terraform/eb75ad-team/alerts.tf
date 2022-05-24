@@ -10,7 +10,7 @@ resource "sysdig_monitor_alert_metric" "prod_db_backup_storage_gt_85" {
   scope              = "kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-backup-storage\")"
   multiple_alerts_by = []
 
-  notification_channels = [57336, 45990, 57341]
+  notification_channels = [45990, 57336, 57341]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -28,7 +28,7 @@ resource "sysdig_monitor_alert_metric" "prod_db_pod_restarts_gte_1" {
   scope              = "kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.pod.label.statefulset in (\"sso-patroni\")"
   multiple_alerts_by = []
 
-  notification_channels = [57336, 45990, 57341]
+  notification_channels = [45990, 57336, 57341]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -46,7 +46,7 @@ resource "sysdig_monitor_alert_metric" "prod_db_pods_high" {
   scope              = "kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.pod.label.statefulset in (\"sso-patroni\")"
   multiple_alerts_by = []
 
-  notification_channels = [57336, 45990, 57341]
+  notification_channels = [45990, 57336, 57341]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -64,7 +64,7 @@ resource "sysdig_monitor_alert_metric" "prod_db_pods_low" {
   scope              = "kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.pod.label.statefulset in (\"sso-patroni\")"
   multiple_alerts_by = []
 
-  notification_channels = [57336, 45990, 57341]
+  notification_channels = [45990, 57336, 57341]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -82,7 +82,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_spike_high" {
   scope              = "kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
-  notification_channels = [57336, 45990, 57341]
+  notification_channels = [45990, 57336, 57341]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -100,7 +100,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_high" {
   scope              = "kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
-  notification_channels = [57336, 45990, 57341]
+  notification_channels = [45990, 57336, 57341]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -118,7 +118,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_med" {
   scope              = "kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
-  notification_channels = [57336, 45990, 57341]
+  notification_channels = [45990, 57336, 57341]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -136,7 +136,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_high" {
   scope              = "kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
-  notification_channels = [57336, 45990, 57341]
+  notification_channels = [45990, 57336, 57341]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -154,7 +154,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_med" {
   scope              = "kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
-  notification_channels = [57336, 45990, 57341]
+  notification_channels = [45990, 57336, 57341]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -172,7 +172,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_low" {
   scope              = "kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
-  notification_channels = [57336, 45990, 57341]
+  notification_channels = [45990, 57336, 57341]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -187,7 +187,7 @@ resource "sysdig_monitor_alert_promql" "prod_db_backup_pv_gt_60" {
   promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=\"sso-backup-storage-backup-pvc\"} * 100 /\nkubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=\"sso-backup-storage-backup-pvc\"}) by (persistentvolumeclaim) > 60"
   trigger_after_minutes = 10
 
-  notification_channels = [57336, 45990, 57341]
+  notification_channels = [45990, 57336, 57341]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -203,7 +203,7 @@ resource "sysdig_monitor_alert_promql" "prod_sso_db_pv_gt_60" {
   promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 60"
   trigger_after_minutes = 10
 
-  notification_channels = [57336, 45990, 57341]
+  notification_channels = [45990, 57336, 57341]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -218,7 +218,7 @@ resource "sysdig_monitor_alert_promql" "prod_sso_db_pv_gt_80" {
   promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 80"
   trigger_after_minutes = 10
 
-  notification_channels = [57336, 45990, 57341]
+  notification_channels = [45990, 57336, 57341]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }

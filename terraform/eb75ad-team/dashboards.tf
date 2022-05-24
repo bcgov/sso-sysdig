@@ -6,7 +6,7 @@ resource "sysdig_monitor_dashboard" "pv_overall" {
     role = "ROLE_RESOURCE_EDIT"
     member {
       type = "TEAM"
-      id   = 36250
+      id   = 40193
     }
   }
 
@@ -154,7 +154,7 @@ resource "sysdig_monitor_dashboard" "pv_usage" {
     role = "ROLE_RESOURCE_EDIT"
     member {
       type = "TEAM"
-      id   = 36250
+      id   = 40193
     }
   }
 
@@ -199,7 +199,7 @@ resource "sysdig_monitor_dashboard" "pods_cpu" {
     role = "ROLE_RESOURCE_EDIT"
     member {
       type = "TEAM"
-      id   = 36250
+      id   = 40193
     }
   }
 
@@ -220,7 +220,7 @@ resource "sysdig_monitor_dashboard" "pods_cpu" {
     description = "Patroni pods are replicas of our database. We are setup to have 3 at any given time. An alert will be triggered if this fails below 3"
 
     query {
-      promql = "sum(kube_pod_sysdig_status_ready{$__scope, kube_pod_label_release='sso-keycloak'})"
+      promql = "sum(kube_pod_sysdig_status_ready{$__scope, kube_deployment_name='sso-keycloak'})"
       unit   = "number"
     }
   }
@@ -235,7 +235,7 @@ resource "sysdig_monitor_dashboard" "pods_cpu" {
     description = "Description"
 
     query {
-      promql = "sum(kube_pod_sysdig_status_ready{$__scope, kube_pod_label_release='sso-patroni'})"
+      promql = "sum(kube_pod_sysdig_status_ready{$__scope, kube_statefulset_name='sso-patroni'})"
       unit   = "number"
     }
   }
@@ -250,7 +250,7 @@ resource "sysdig_monitor_dashboard" "pods_cpu" {
     description = "Description"
 
     query {
-      promql = "avg(sum(sysdig_container_cpu_cores_used{$__scope, kube_pod_label_release='sso-keycloak'}))"
+      promql = "avg(sum(sysdig_container_cpu_cores_used{$__scope, kube_deployment_name='sso-keycloak'}))"
       unit   = "number"
     }
   }
