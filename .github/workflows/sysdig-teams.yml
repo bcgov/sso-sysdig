@@ -18,10 +18,10 @@ jobs:
         include:
           - host: https://api.gold.devops.gov.bc.ca:6443
             plate: c6af30
-            token: ${{ secrets.GOLD_C6AF30_OPENSHIFT_TOKEN }}
+            token: GOLD_C6AF30_OPENSHIFT_TOKEN
           - host: https://api.gold.devops.gov.bc.ca:6443
             plate: eb75ad
-            token: ${{ secrets.GOLD_EB75AD_OPENSHIFT_TOKEN }}
+            token: GOLD_EB75AD_OPENSHIFT_TOKEN
 
     steps:
       - uses: hmarr/debug-action@v2
@@ -31,7 +31,7 @@ jobs:
         uses: redhat-actions/oc-login@v1
         with:
           openshift_server_url: ${{ matrix.host }}
-          openshift_token: ${{ matrix.token }}
+          openshift_token: ${{ secrets[matrix.token] }}
           namespace: ${{ matrix.plate }}-tools
           insecure_skip_tls_verify: true
 
