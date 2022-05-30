@@ -1,6 +1,6 @@
 # sso-sysdig
 
-This repository includes `Helm` charts to deploy BCGov Openshift `SysdigTeams Operators` and `Terraform` scripts to provision `Sysdig` alerts and dashboards in the following Sysdig workspaces.
+This repository includes `Helm` charts to deploy the `sysdig-team custom resource` for the BCGov Openshift `Sysdig Team Operator` and `Terraform` scripts to provision `Sysdig` alerts and dashboards in the following Sysdig workspaces.
 
 - c6af30-team
 - eb75ad-team
@@ -17,10 +17,11 @@ The Helm chart defines the `Sysdig Team Members` in `c6af30` and `eb75ad` projec
 
 - `merge into main branch`: it runs `Helm upgrade` to release a new version of the chart and apply the changes made.
 - see [Helm GitHub Actions](.github/workflows/sysdig-teams.yml)
+- you can either use the same sysdig helm chart or create your own leveraging the [sysdig helm chart definition](https://github.com/bcgov/sso-helm-charts/tree/main/charts/sysdig)
 
 ## Terraform
 
-The Terraform scripts defines the `alerts` and `dashboard` configuration of the `Sysdig Workspaces` in `c6af30` and `eb75ad` projects in the Gold cluster. Terraform runs in the following two GitHub events on Github Actions CI/CD pipelines:
+The Terraform script defines the `alerts` and `dashboard` configuration of the `Sysdig Workspaces` in `c6af30` and `eb75ad` projects in the Gold cluster. Terraform runs in the following two GitHub events on Github Actions CI/CD pipelines:
 
 - `pull request on main branch`: it runs `Terraform Plan` to creates an execution plan, which lets you preview the changes in the PR.
 - `merge into main branch`: it runs `Terraform Apply` to apply the changes; the Terraform state is stored in a AWS S3 bucket `xgr00q-prod-sysdig`.
