@@ -5,14 +5,26 @@ This repository includes `Helm` charts to deploy BCGov Openshift `SysdigTeams Op
 - c6af30-team
 - eb75ad-team
 
+## Purpose
+
+`Terraform` automates the infrastructure/configuration management using a declarative configuration language, and provides benefits such as `peer review`, `version control`,`security as code`, `policy enforcement`, and `reduced provisioning time`.
+
+Please see [Using Terraform for container security as code with Sysdig Secure](https://sysdig.com/blog/using-terraform-for-container-security-as-code/).
+
 ## Helm
+
+The Helm chart defines the `Sysdig Team Members` in `c6af30` and `eb75ad` projects in the Gold cluster. Helm runs in the following GitHub event on Github Actions CI/CD pipelines:
+
+- `merge into main branch`: it runs `Helm upgrade` to release a new version of the chart and apply the changes made.
+- see [Helm GitHub Actions](.github/workflows/sysdig-teams.yml)
 
 ## Terraform
 
-Terraform runs in two places in Github Actions CI/CD pipelines.
+The Terraform scripts defines the `alerts` and `dashboard` configuration of the `Sysdig Workspaces` in `c6af30` and `eb75ad` projects in the Gold cluster. Terraform runs in the following two GitHub events on Github Actions CI/CD pipelines:
 
 - `pull request on main branch`: it runs `Terraform Plan` to creates an execution plan, which lets you preview the changes in the PR.
 - `merge into main branch`: it runs `Terraform Apply` to apply the changes; the Terraform state is stored in a AWS S3 bucket `xgr00q-prod-sysdig`.
+- see [Terraform GitHub Actions](.github/workflows/terraform.yml)
 
 ### Usage
 
