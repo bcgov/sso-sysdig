@@ -1,5 +1,5 @@
 resource "sysdig_monitor_alert_metric" "prod_db_pod_restarts_gte_1" {
-  name        = "[PROD] DB - Pod Restarts"
+  name        = "[GOLD SANDBOX PROD] DB - Pod Restarts"
   description = ""
   severity    = 2
   enabled     = false
@@ -17,7 +17,7 @@ resource "sysdig_monitor_alert_metric" "prod_db_pod_restarts_gte_1" {
 }
 
 resource "sysdig_monitor_alert_metric" "prod_db_pods_high" {
-  name        = "[PROD] DB - Ready Pods High"
+  name        = "[GOLD SANDBOX PROD] DB - Ready Pods High"
   description = ""
   severity    = 0
   enabled     = false
@@ -35,7 +35,7 @@ resource "sysdig_monitor_alert_metric" "prod_db_pods_high" {
 }
 
 resource "sysdig_monitor_alert_metric" "prod_db_pods_low" {
-  name        = "[PROD] DB - Ready Pods Low"
+  name        = "[GOLD SANDBOX PROD] DB - Ready Pods Low"
   description = ""
   severity    = 2
   enabled     = false
@@ -53,7 +53,7 @@ resource "sysdig_monitor_alert_metric" "prod_db_pods_low" {
 }
 
 resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_spike_high" {
-  name        = "[PROD] SSO - CPU Spike Over 5"
+  name        = "[GOLD SANDBOX PROD] SSO - CPU Spike Over 5"
   description = ""
   severity    = 0
   enabled     = false
@@ -71,7 +71,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_spike_high" {
 }
 
 resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_high" {
-  name        = "[PROD] SSO - CPU Usage High"
+  name        = "[GOLD SANDBOX PROD] SSO - CPU Usage High"
   description = ""
   severity    = 0
   enabled     = false
@@ -89,7 +89,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_high" {
 }
 
 resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_med" {
-  name        = "[PROD] SSO - CPU Usage Med"
+  name        = "[GOLD SANDBOX PROD] SSO - CPU Usage Med"
   description = ""
   severity    = 4
   enabled     = false
@@ -107,7 +107,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_med" {
 }
 
 resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_high" {
-  name        = "[PROD] SSO - Ready Pods High"
+  name        = "[GOLD SANDBOX PROD] SSO - Ready Pods High"
   description = ""
   severity    = 0
   enabled     = false
@@ -125,7 +125,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_high" {
 }
 
 resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_med" {
-  name        = "[PROD] SSO - Ready Pods Med"
+  name        = "[GOLD SANDBOX PROD] SSO - Ready Pods Med"
   description = ""
   severity    = 2
   enabled     = false
@@ -143,7 +143,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_med" {
 }
 
 resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_low" {
-  name        = "[PROD] SSO - Ready Pods Low"
+  name        = "[GOLD SANDBOX PROD] SSO - Ready Pods Low"
   description = ""
   severity    = 4
   enabled     = false
@@ -161,7 +161,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_low" {
 }
 
 resource "sysdig_monitor_alert_promql" "prod_sso_db_pv_gt_60" {
-  name        = "[PROD] SSO DB PV over 60%"
+  name        = "[GOLD SANDBOX PROD] SSO DB PV over 60%"
   description = ""
   severity    = 4
   enabled     = false
@@ -176,7 +176,7 @@ resource "sysdig_monitor_alert_promql" "prod_sso_db_pv_gt_60" {
 }
 
 resource "sysdig_monitor_alert_promql" "prod_sso_db_pv_gt_80" {
-  name        = "[PROD] SSO DB PV over 80%"
+  name        = "[GOLD SANDBOX PROD] SSO DB PV over 80%"
   description = ""
   severity    = 2
   enabled     = false
