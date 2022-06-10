@@ -7,7 +7,7 @@ resource "sysdig_monitor_alert_metric" "prod_db_pod_restarts_gte_1" {
   metric                = "sum(avg(kube_pod_sysdig_restart_count)) >= 1"
   trigger_after_minutes = 5
 
-  scope              = "kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.pod.label.statefulset in (\"sso-patroni\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.pod.label.statefulset in (\"sso-patroni\")"
   multiple_alerts_by = []
 
   notification_channels = [47969]
@@ -25,7 +25,7 @@ resource "sysdig_monitor_alert_metric" "prod_db_pods_high" {
   metric                = "sum(avg(kube_pod_sysdig_status_ready)) < 2"
   trigger_after_minutes = 5
 
-  scope              = "kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.pod.label.statefulset in (\"sso-patroni\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.pod.label.statefulset in (\"sso-patroni\")"
   multiple_alerts_by = []
 
   notification_channels = [47969]
@@ -43,7 +43,7 @@ resource "sysdig_monitor_alert_metric" "prod_db_pods_low" {
   metric                = "sum(avg(kube_pod_sysdig_status_ready)) < 2.5"
   trigger_after_minutes = 5
 
-  scope              = "kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.pod.label.statefulset in (\"sso-patroni\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.pod.label.statefulset in (\"sso-patroni\")"
   multiple_alerts_by = []
 
   notification_channels = [47969]
@@ -61,7 +61,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_spike_high" {
   metric                = "avg(max(sysdig_container_cpu_cores_used)) > 5"
   trigger_after_minutes = 5
 
-  scope              = "kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
   notification_channels = [47969]
@@ -79,7 +79,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_high" {
   metric                = "sum(avg(sysdig_container_cpu_cores_used)) > 5"
   trigger_after_minutes = 5
 
-  scope              = "kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
   notification_channels = [47969]
@@ -97,7 +97,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_med" {
   metric                = "sum(avg(sysdig_container_cpu_cores_used)) >= 3"
   trigger_after_minutes = 5
 
-  scope              = "kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
   notification_channels = [47969]
@@ -115,7 +115,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_high" {
   metric                = "sum(min(kube_pod_sysdig_status_ready)) < 3"
   trigger_after_minutes = 5
 
-  scope              = "kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
   notification_channels = [47969]
@@ -133,7 +133,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_med" {
   metric                = "sum(min(kube_pod_sysdig_status_ready)) < 4"
   trigger_after_minutes = 5
 
-  scope              = "kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
   notification_channels = [47969]
@@ -151,7 +151,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_low" {
   metric                = "sum(max(kube_pod_sysdig_status_ready)) < 5"
   trigger_after_minutes = 5
 
-  scope              = "kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
   notification_channels = [47969]
@@ -166,7 +166,7 @@ resource "sysdig_monitor_alert_promql" "prod_sso_db_pv_gt_60" {
   severity    = 4
   enabled     = false
 
-  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"c6af30-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"c6af30-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 60"
+  promql                = "avg(kubelet_volume_stats_used_bytes{cluster=\"gold\", namespace=\"c6af30-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{cluster=\"gold\", namespace=\"c6af30-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 60"
   trigger_after_minutes = 10
 
   notification_channels = []
@@ -181,7 +181,7 @@ resource "sysdig_monitor_alert_promql" "prod_sso_db_pv_gt_80" {
   severity    = 2
   enabled     = false
 
-  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"c6af30-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"c6af30-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 80"
+  promql                = "avg(kubelet_volume_stats_used_bytes{cluster=\"gold\", namespace=\"c6af30-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{cluster=\"gold\", namespace=\"c6af30-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 80"
   trigger_after_minutes = 10
 
   notification_channels = []

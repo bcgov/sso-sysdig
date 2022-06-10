@@ -204,10 +204,17 @@ resource "sysdig_monitor_dashboard" "pods_cpu" {
   }
 
   scope {
+    metric     = "kube_cluster_name"
+    comparator = "in"
+    value      = ["gold"]
+    variable   = "cluster_name"
+  }
+
+  scope {
     metric     = "kube_namespace_name"
     comparator = "in"
     value      = ["eb75ad-prod"]
-    variable   = "cluster_name"
+    variable   = "namespace_name"
   }
 
   panel {
