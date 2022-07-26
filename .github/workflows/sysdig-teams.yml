@@ -22,7 +22,9 @@ jobs:
           - host: https://api.gold.devops.gov.bc.ca:6443
             plate: eb75ad
             token: GOLD_EB75AD_OPENSHIFT_TOKEN
-
+          - host: https://api.silver.devops.gov.bc.ca:6443
+            plate: 3d5c3f
+            token: SILVER_3D5C3F_OPENSHIFT_TOKEN
     steps:
       - uses: hmarr/debug-action@v2
       - uses: actions/checkout@v2

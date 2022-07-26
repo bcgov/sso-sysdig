@@ -1,0 +1,1 @@
+Regenrate a sysdig team using helm forces us to delete the previous configuration. (alerts, dashboards, notification channels, etc)  Rather than risk that, we will save the `team.yaml` for production silver environment and manually run it when we need to update the sysdig access for our team.
