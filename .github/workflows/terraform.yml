@@ -50,8 +50,6 @@ jobs:
           cat >"ci.auto.tfvars" <<EOF
           c6af30_team_sysdig_monitor_api_token="${{ secrets.C6AF30_TEAM_SYSDIG_MONITOR_API_TOKEN }}"
           eb75ad_team_sysdig_monitor_api_token="${{ secrets.EB75AD_TEAM_SYSDIG_MONITOR_API_TOKEN }}"
-          sand3d5c3f_team_sysdig_monitor_api_token = "${{ secrets.EB75AD_TEAM_SYSDIG_MONITOR_API_TOKEN }}"
-          prod6d70e7_team_sysdig_monitor_api_token = "${{ secrets.EB75AD_TEAM_SYSDIG_MONITOR_API_TOKEN }}"
           EOF
 
         working-directory: ./terraform
