@@ -10,5 +10,5 @@ module "eb75ad-team" {
 
 module "sand3d5c3f-team" {
   source                   = "./sand3d5c3f-team"
-  sysdig_monitor_api_token = var.sand3d5c3f_team_sysdig_monitor_api_token
+  sysdig_monitor_api_token = var.silver_3d5c3f_team_sysdig_monitor_api_token
 }
