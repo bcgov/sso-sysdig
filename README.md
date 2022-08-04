@@ -4,6 +4,7 @@ This repository includes `Helm` charts to deploy the `sysdig-team custom resourc
 
 - c6af30-team
 - eb75ad-team
+- 3d5c3f-team
 
 ## Purpose
 
@@ -13,7 +14,7 @@ Please see [Using Terraform for container security as code with Sysdig Secure](h
 
 ## Helm
 
-The Helm chart defines the `Sysdig Team Members` in `c6af30` and `eb75ad` projects in the Gold cluster. Helm runs in the following GitHub event on Github Actions CI/CD pipelines:
+The Helm chart defines the `Sysdig Team Members` in `3d5c3f`,`c6af30`, and `eb75ad` projects in the Gold cluster. Helm runs in the following GitHub event on Github Actions CI/CD pipelines:
 
 - `merge into main branch`: it runs `Helm upgrade` to release a new version of the chart and apply the changes made.
 - see [Helm GitHub Actions](.github/workflows/sysdig-teams.yml)
@@ -42,8 +43,9 @@ In order to run the Terraform scripts locally, it requires:
 ```sh
 cd terraform
 cat >"terraform.tfvars" <<EOF
-c6af30_team_sysdig_monitor_api_token=<sysdig_token1>
-eb75ad_team_sysdig_monitor_api_token=<sysdig_token2>
+gold_c6af30_team_sysdig_monitor_api_token=<sysdig_token1>
+gold_eb75ad_team_sysdig_monitor_api_token=<sysdig_token2>
+silver_3d5c3f_team_sysdig_monitor_api_token=<sysdig_token3>
 EOF
 terraform init
 terraform apply
