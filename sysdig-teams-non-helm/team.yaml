@@ -21,3 +21,5 @@ spec:
       role: ROLE_TEAM_MANAGER
     - name: c.gustafson@cgi.com
       role: ROLE_TEAM_MANAGER
+    - name: bcgov.sso@gov.bc.ca
+      role: ROLE_TEAM_MANAGER
