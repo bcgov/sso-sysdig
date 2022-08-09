@@ -12,3 +12,8 @@ module "silver-3d5c3f-team" {
   source                   = "./silver-3d5c3f-team"
   sysdig_monitor_api_token = var.silver_3d5c3f_team_sysdig_monitor_api_token
 }
+
+module "silver-6d70e7-team" {
+  source                   = "./silver-6d70e7-team"
+  sysdig_monitor_api_token = var.silver_6d70e7_team_sysdig_monitor_api_token
+}
