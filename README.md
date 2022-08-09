@@ -39,11 +39,13 @@ In order to run the Terraform scripts locally, it requires:
 
 - TF variable file `terraform.tfvars` with sysdig tokens.
 
+Note: the Sysdig api tokens must be those of the sysdig team, not a sysdig user's personal credentials.  These are stored with other team secrets.  Using the wrong credentials will cause unpredictable behaviour when terraform attempts to generate dashboards and alerts.
+
 ```sh
 cd terraform
 cat >"terraform.tfvars" <<EOF
-c6af30_team_sysdig_monitor_api_token=<sysdig_token1>
-eb75ad_team_sysdig_monitor_api_token=<sysdig_token2>
+gold_c6af30_team_sysdig_monitor_api_token=<sysdig_token1>
+gold_eb75ad_team_sysdig_monitor_api_token=<sysdig_token2>
 EOF
 terraform init
 terraform apply

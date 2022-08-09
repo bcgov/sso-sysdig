@@ -10,7 +10,6 @@ resource "sysdig_monitor_alert_metric" "prod_db_pod_restarts_gte_1" {
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.pod.label.statefulset in (\"sso-patroni\")"
   multiple_alerts_by = []
 
-  notification_channels = [47969]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -28,7 +27,6 @@ resource "sysdig_monitor_alert_metric" "prod_db_pods_high" {
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.pod.label.statefulset in (\"sso-patroni\")"
   multiple_alerts_by = []
 
-  notification_channels = [47969]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -46,7 +44,6 @@ resource "sysdig_monitor_alert_metric" "prod_db_pods_low" {
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.pod.label.statefulset in (\"sso-patroni\")"
   multiple_alerts_by = []
 
-  notification_channels = [47969]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -64,7 +61,6 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_spike_high" {
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
-  notification_channels = [47969]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -82,7 +78,6 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_high" {
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
-  notification_channels = [47969]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -100,7 +95,6 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_med" {
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
-  notification_channels = [47969]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -118,7 +112,6 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_high" {
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
-  notification_channels = [47969]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -136,7 +129,6 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_med" {
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
-  notification_channels = [47969]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -154,7 +146,6 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_low" {
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
-  notification_channels = [47969]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -169,7 +160,6 @@ resource "sysdig_monitor_alert_promql" "prod_sso_db_pv_gt_60" {
   promql                = "avg(kubelet_volume_stats_used_bytes{cluster=\"gold\", namespace=\"c6af30-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{cluster=\"gold\", namespace=\"c6af30-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 60"
   trigger_after_minutes = 10
 
-  notification_channels = []
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -184,7 +174,6 @@ resource "sysdig_monitor_alert_promql" "prod_sso_db_pv_gt_80" {
   promql                = "avg(kubelet_volume_stats_used_bytes{cluster=\"gold\", namespace=\"c6af30-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{cluster=\"gold\", namespace=\"c6af30-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 80"
   trigger_after_minutes = 10
 
-  notification_channels = []
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
