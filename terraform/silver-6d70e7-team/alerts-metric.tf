@@ -6,7 +6,7 @@ resource "sysdig_monitor_alert_metric" "sso_cpu_spike_med" {
   metric                = "avg(max(cpu.cores.used)) > 2"
   trigger_after_minutes = 5
   scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and kubernetes.pod.label.deploymentConfig in (\"sso-prod\")"
-  notification_channels = [45990, 47595, 47291]
+  notification_channels = [45990, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -20,7 +20,7 @@ resource "sysdig_monitor_alert_metric" "db_filesystem_limit_med" {
   metric                = "max(avg(fs.used.percent)) > 60"
   trigger_after_minutes = 10
   scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and kubernetes.pod.label.statefulset in (\"sso-pgsql-prod\")"
-  notification_channels = [45990, 47595, 47291]
+  notification_channels = [45990, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -34,7 +34,7 @@ resource "sysdig_monitor_alert_metric" "sso_pod_restart" {
   metric                = "sum(max(kubernetes.pod.restart.count)) >= 1"
   trigger_after_minutes = 10
   scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\")"
-  notification_channels = [45990, 47595, 47291]
+  notification_channels = [45990, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -118,7 +118,7 @@ resource "sysdig_monitor_alert_metric" "keycloak_cpu_elevated_high" {
   metric                = "sum(avg(cpu.cores.used)) > 5"
   trigger_after_minutes = 5
   scope                 = "kubernetes.deployment.name in (\"sso-keycloak\") and kubernetes.namespace.name in (\"6d70e7-prod\")"
-  notification_channels = [45990, 47595, 47291]
+  notification_channels = [45990, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }

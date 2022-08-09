@@ -39,7 +39,7 @@ resource "sysdig_monitor_alert_promql" "keycloak_pod_not_ready_high" {
       ) > 2
       EOT
   trigger_after_minutes = 5
-  notification_channels = [45990, 47595, 47291]
+  notification_channels = [45990, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -63,7 +63,7 @@ resource "sysdig_monitor_alert_promql" "patroni_pod_not_ready_med" {
       ) >= 1
       EOT
   trigger_after_minutes = 5
-  notification_channels = [45990, 47595, 47291]
+  notification_channels = [45990, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -87,7 +87,7 @@ resource "sysdig_monitor_alert_promql" "patroni_pod_not_ready_high" {
       ) > 1
       EOT
   trigger_after_minutes = 5
-  notification_channels = [45990, 47595, 47291]
+  notification_channels = [45990, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
