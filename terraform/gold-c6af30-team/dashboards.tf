@@ -1,12 +1,12 @@
 resource "sysdig_monitor_dashboard" "pv_overall" {
-  name        = "Persistent Volume Overall Status"
-  description = "Persistent Volume Overall Status"
+  name        = "Managed by terraform: Persistent Volume Overall Status"
+  description = "Managed by terraform: Persistent Volume Overall Status"
 
   share {
     role = "ROLE_RESOURCE_EDIT"
     member {
       type = "TEAM"
-      id   = 36250
+      id   = 40192
     }
   }
 
@@ -147,14 +147,14 @@ resource "sysdig_monitor_dashboard" "pv_overall" {
 }
 
 resource "sysdig_monitor_dashboard" "pv_usage" {
-  name        = "Persistent Volume Usage"
-  description = "Persistent Volume Usage"
+  name        = "Managed by terraform: Persistent Volume Usage"
+  description = "Managed by terraform: Persistent Volume Usage"
 
   share {
     role = "ROLE_RESOURCE_EDIT"
     member {
       type = "TEAM"
-      id   = 36250
+      id   = 40192
     }
   }
 
@@ -192,14 +192,14 @@ resource "sysdig_monitor_dashboard" "pv_usage" {
 }
 
 resource "sysdig_monitor_dashboard" "pods_cpu" {
-  name        = "Pods & CPU"
-  description = "Pods & CPU"
+  name        = "Managed by terraform: Pods & CPU"
+  description = "Managed by terraform: Pods & CPU"
 
   share {
     role = "ROLE_RESOURCE_EDIT"
     member {
       type = "TEAM"
-      id   = 36250
+      id   = 40192
     }
   }
 
