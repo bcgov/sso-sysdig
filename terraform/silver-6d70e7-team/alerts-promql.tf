@@ -124,7 +124,7 @@ resource "sysdig_monitor_alert_promql" "db_pvc_sixty_percent" {
   promql                 = "avg(kubelet_volume_stats_used_bytes/kubelet_volume_stats_capacity_bytes) by (persistentvolumeclaim) >= 0.6"
   trigger_after_minutes  = 10
   renotification_minutes = 30
-  notification_channels  = [45990, 47592, 47290]
+  notification_channels  = [45990, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -144,7 +144,7 @@ resource "sysdig_monitor_alert_promql" "patroni_pvc_over_sixty" {
           > 60
           EOT
   trigger_after_minutes = 10
-  notification_channels = [45990, 47592, 47290]
+  notification_channels = [45990, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -163,7 +163,7 @@ resource "sysdig_monitor_alert_promql" "patroni_backup_pvc_over_sixty" {
     ) by (persistentvolumeclaim) > 60
   EOT
   trigger_after_minutes = 10
-  notification_channels = [45990, 47290]
+  notification_channels = [45990, 47291]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -183,7 +183,7 @@ resource "sysdig_monitor_alert_promql" "patroni_backup_pvc_over_eighty" {
       by (persistentvolumeclaim) > 80
     EOT
   trigger_after_minutes = 10
-  notification_channels = [45990, 47592, 47290]
+  notification_channels = [45990, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -202,7 +202,7 @@ resource "sysdig_monitor_alert_promql" "log_pvc_over_sixty" {
     ) by (persistentvolumeclaim) > 60
   EOT
   trigger_after_minutes = 10
-  notification_channels = [45990, 47592, 47290]
+  notification_channels = [45990, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -221,7 +221,7 @@ resource "sysdig_monitor_alert_promql" "log_pvc_over_eighty" {
     by (persistentvolumeclaim) > 80
   EOT
   trigger_after_minutes = 10
-  notification_channels = [45990, 47592, 47290]
+  notification_channels = [45990, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
