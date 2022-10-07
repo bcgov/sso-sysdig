@@ -54,11 +54,13 @@ resource "sysdig_monitor_alert_promql" "patroni_pod_not_ready_med" {
   promql                = <<-EOT
       (
         (
-          sum(kube_workload_status_desired{cluster=~"silver",namespace=~"6d70e7-prod",kube_workload_name=~"sso-pgsql-prod",kube_workload_type=~"statefulset"})
+          sum(kube_workload_status_desired{cluster=~"silver",namespace=~"6d70e7-prod",kube_workload_name=~"sso-pgsql-prod-11-patroni
+",kube_workload_type=~"statefulset"})
         )
         -
         (
-          sum(kube_workload_status_ready{cluster=~"silver",namespace=~"6d70e7-prod",kube_workload_name=~"sso-pgsql-prod",kube_workload_type=~"statefulset"})
+          sum(kube_workload_status_ready{cluster=~"silver",namespace=~"6d70e7-prod",kube_workload_name=~"sso-pgsql-prod-11-patroni
+",kube_workload_type=~"statefulset"})
         )
       ) >= 1
       EOT
@@ -78,11 +80,13 @@ resource "sysdig_monitor_alert_promql" "patroni_pod_not_ready_high" {
   promql                = <<-EOT
       (
         (
-          sum(kube_workload_status_desired{cluster=~"silver",namespace=~"6d70e7-prod",kube_workload_name=~"sso-pgsql-prod",kube_workload_type=~"statefulset"})
+          sum(kube_workload_status_desired{cluster=~"silver",namespace=~"6d70e7-prod",kube_workload_name=~"sso-pgsql-prod-11-patroni
+",kube_workload_type=~"statefulset"})
         )
         -
         (
-          sum(kube_workload_status_ready{cluster=~"silver",namespace=~"6d70e7-prod",kube_workload_name=~"sso-pgsql-prod",kube_workload_type=~"statefulset"})
+          sum(kube_workload_status_ready{cluster=~"silver",namespace=~"6d70e7-prod",kube_workload_name=~"sso-pgsql-prod-11-patroni
+",kube_workload_type=~"statefulset"})
         )
       ) > 1
       EOT
@@ -137,9 +141,9 @@ resource "sysdig_monitor_alert_promql" "patroni_pvc_over_sixty" {
   enabled               = true
   promql                = <<-EOT
           avg(
-            kubelet_volume_stats_used_bytes{persistentvolumeclaim=~"postgresql-sso-pgsql-prod-.*"}*100
+            kubelet_volume_stats_used_bytes{persistentvolumeclaim=~"storage-volume-sso-pgsql-prod-11-patroni-.*"}*100
             /
-            kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"postgresql-sso-pgsql-prod-.*"}
+            kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"storage-volume-sso-pgsql-prod-11-patroni-.*"}
           ) by (persistentvolumeclaim)
           > 60
           EOT
@@ -177,9 +181,9 @@ resource "sysdig_monitor_alert_promql" "patroni_backup_pvc_over_eighty" {
   enabled               = true
   promql                = <<-EOT
     avg(
-      kubelet_volume_stats_used_bytes{persistentvolumeclaim=~"postgresql-sso-pgsql-prod-.*"}*100
+      kubelet_volume_stats_used_bytes{persistentvolumeclaim=~"storage-volume-sso-pgsql-prod-11-patroni-.*"}*100
       /
-      kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"postgresql-sso-pgsql-prod-.*"})
+      kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"storage-volume-sso-pgsql-prod-11-patroni-.*"})
       by (persistentvolumeclaim) > 80
     EOT
   trigger_after_minutes = 10

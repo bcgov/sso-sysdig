@@ -19,7 +19,7 @@ resource "sysdig_monitor_alert_metric" "db_filesystem_limit_med" {
   enabled               = false
   metric                = "max(avg(fs.used.percent)) > 60"
   trigger_after_minutes = 10
-  scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and kubernetes.pod.label.statefulset in (\"sso-pgsql-prod\")"
+  scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and kubernetes.pod.label.statefulset in (\"sso-pgsql-prod-11-patroni\")"
   notification_channels = [45990, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
@@ -61,7 +61,7 @@ resource "sysdig_monitor_alert_metric" "pgsql_pod_restart_med" {
   enabled               = true
   metric                = "sum(avg(kubernetes.pod.restart.count)) >= 1"
   trigger_after_minutes = 10
-  scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and kubernetes.pod.label.statefulset in (\"sso-pgsql-prod\")"
+  scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and kubernetes.pod.label.statefulset in (\"sso-pgsql-prod-11-patroni\")"
   notification_channels = [45990, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
@@ -131,7 +131,7 @@ resource "sysdig_monitor_alert_metric" "patroni_pods_down_med" {
   enabled               = true
   metric                = "sum(avg(kube_pod_sysdig_status_ready)) < 2.5"
   trigger_after_minutes = 10
-  scope                 = "kubernetes.pod.label.statefulset in (\"sso-pgsql-prod\")"
+  scope                 = "kubernetes.pod.label.statefulset in (\"sso-pgsql-prod-11-patroni\")"
   notification_channels = [45990]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
@@ -172,7 +172,7 @@ resource "sysdig_monitor_alert_metric" "patroni_pods_down_high" {
   enabled               = true
   metric                = "sum(avg(kube_pod_sysdig_status_ready)) < 2.0"
   trigger_after_minutes = 10
-  scope                 = "kubernetes.pod.label.statefulset in (\"sso-pgsql-prod\")"
+  scope                 = "kubernetes.pod.label.statefulset in (\"sso-pgsql-prod-11-patroni\")"
   notification_channels = [45990]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
