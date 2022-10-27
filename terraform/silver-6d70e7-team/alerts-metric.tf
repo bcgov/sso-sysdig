@@ -61,7 +61,7 @@ resource "sysdig_monitor_alert_metric" "pgsql_pod_restart_med" {
   enabled               = true
   metric                = "sum(avg(kubernetes.pod.restart.count)) >= 1"
   trigger_after_minutes = 10
-  scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and kubernetes.pod.label.statefulset in (\"sso-pgsql-prod-11-patroni\")"
+  scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and kube_workload_name in (\"sso-pgsql-prod-11-patroni\")"
   notification_channels = [45990, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
