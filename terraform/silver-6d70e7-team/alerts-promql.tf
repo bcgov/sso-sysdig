@@ -54,13 +54,11 @@ resource "sysdig_monitor_alert_promql" "patroni_pod_not_ready_med" {
   promql                = <<-EOT
       (
         (
-          sum(kube_workload_status_desired{cluster=~"silver",namespace=~"6d70e7-prod",kube_workload_name=~"sso-pgsql-prod-11-patroni
-",kube_workload_type=~"statefulset"})
+          sum(kube_workload_status_desired{cluster=~"silver",namespace=~"6d70e7-prod",kube_workload_name=~"sso-pgsql-prod-11-patroni",kube_workload_type=~"statefulset"})
         )
         -
         (
-          sum(kube_workload_status_ready{cluster=~"silver",namespace=~"6d70e7-prod",kube_workload_name=~"sso-pgsql-prod-11-patroni
-",kube_workload_type=~"statefulset"})
+          sum(kube_workload_status_ready{cluster=~"silver",namespace=~"6d70e7-prod",kube_workload_name=~"sso-pgsql-prod-11-patroni",kube_workload_type=~"statefulset"})
         )
       ) >= 1
       EOT
@@ -80,13 +78,11 @@ resource "sysdig_monitor_alert_promql" "patroni_pod_not_ready_high" {
   promql                = <<-EOT
       (
         (
-          sum(kube_workload_status_desired{cluster=~"silver",namespace=~"6d70e7-prod",kube_workload_name=~"sso-pgsql-prod-11-patroni
-",kube_workload_type=~"statefulset"})
+          sum(kube_workload_status_desired{cluster=~"silver",namespace=~"6d70e7-prod",kube_workload_name=~"sso-pgsql-prod-11-patroni",kube_workload_type=~"statefulset"})
         )
         -
         (
-          sum(kube_workload_status_ready{cluster=~"silver",namespace=~"6d70e7-prod",kube_workload_name=~"sso-pgsql-prod-11-patroni
-",kube_workload_type=~"statefulset"})
+          sum(kube_workload_status_ready{cluster=~"silver",namespace=~"6d70e7-prod",kube_workload_name=~"sso-pgsql-prod-11-patroni",kube_workload_type=~"statefulset"})
         )
       ) > 1
       EOT
