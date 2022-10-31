@@ -1,5 +1,7 @@
 # sso-sysdig
 
+![Lifecycle:Stable](https://img.shields.io/badge/Lifecycle-Stable-97ca00)
+
 This repository includes `Helm` charts to deploy the `sysdig-team custom resource` for the BCGov Openshift `Sysdig Team Operator` and `Terraform` scripts to provision `Sysdig` alerts and dashboards in the following Sysdig workspaces.
 
 - c6af30-team
