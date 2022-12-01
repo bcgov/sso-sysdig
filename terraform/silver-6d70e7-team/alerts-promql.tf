@@ -118,7 +118,7 @@ resource "sysdig_monitor_alert_promql" "keycloak_pod_not_ready_low" {
 
 resource "sysdig_monitor_alert_promql" "db_pvc_sixty_percent" {
   name                   = "App - Prod - SSO - DB PVC Filesystem > 60% Terraform Silver"
-  description            = "Managed by terraform: Alert if postgresql-sso Filesystem exceeds more than 60%"
+  description            = "Managed by terraform: Alert if postgresql-sso Filesystem exceeds more than 60%."
   severity               = 2
   enabled                = false
   promql                 = "avg(kubelet_volume_stats_used_bytes/kubelet_volume_stats_capacity_bytes) by (persistentvolumeclaim) >= 0.6"
@@ -132,7 +132,7 @@ resource "sysdig_monitor_alert_promql" "db_pvc_sixty_percent" {
 
 resource "sysdig_monitor_alert_promql" "patroni_pvc_over_sixty" {
   name                  = "Patroni - PVCs > 60% Terraform Silver"
-  description           = "Managed by terraform"
+  description           = "Managed by terraform: To resolve, redeploy the patroni helm chart 'silver-patroni' in the sso-keycloak repo with an updated values file."
   severity              = 4
   enabled               = true
   promql                = <<-EOT
@@ -152,7 +152,7 @@ resource "sysdig_monitor_alert_promql" "patroni_pvc_over_sixty" {
 
 resource "sysdig_monitor_alert_promql" "patroni_backup_pvc_over_sixty" {
   name                  = "Patroni - Backup PVC over 60% Terraform Silver"
-  description           = "Managed by terraform: undefined"
+  description           = "Managed by terraform: To resolve, redeploy the backup strorage helm chart in the sso-keycloak repo with an updated values file."
   severity              = 4
   enabled               = true
   promql                = <<-EOT
@@ -172,7 +172,7 @@ resource "sysdig_monitor_alert_promql" "patroni_backup_pvc_over_sixty" {
 
 resource "sysdig_monitor_alert_promql" "patroni_backup_pvc_over_eighty" {
   name                  = "Patroni - PVCs > 80% Terraform Silver"
-  description           = "Managed by terraform: undefined"
+  description           = "Managed by terraform: To resolve, redeploy the silver-patroni helm chart in the sso-keycloak repo with an updated values file."
   severity              = 2
   enabled               = true
   promql                = <<-EOT
@@ -191,7 +191,7 @@ resource "sysdig_monitor_alert_promql" "patroni_backup_pvc_over_eighty" {
 
 resource "sysdig_monitor_alert_promql" "log_pvc_over_sixty" {
   name                  = "SSO Logs - PVCs > 60% Terraform Silver"
-  description           = "Managed by terraform: undefined"
+  description           = "Managed by terraform: To resolve, redeploy the silver keycloak helm chart in the sso-keycloak repo with an updated values file."
   severity              = 4
   enabled               = true
   promql                = <<-EOT
@@ -210,7 +210,7 @@ resource "sysdig_monitor_alert_promql" "log_pvc_over_sixty" {
 
 resource "sysdig_monitor_alert_promql" "log_pvc_over_eighty" {
   name                  = "Patroni - Backup PVC over 80% Terraform Silver"
-  description           = "Managed by terraform: undefined"
+  description           = "Managed by terraform: To resolve, redeploy the backup helm chart in the sso-keycloak repo with an updated values file."
   severity              = 4
   enabled               = true
   promql                = <<-EOT
