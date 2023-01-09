@@ -214,7 +214,7 @@ resource "sysdig_monitor_alert_promql" "prod_backup_storage_pv_usage_gt_low" {
 
 resource "sysdig_monitor_alert_promql" "prod_minio_pvc_storage_low" {
   name        = "[GOLD PROD] Minio PVC over 70%"
-  description = "The minio pvc is over 70%, increase via the terraform chart in "
+  description = "The minio pvc is over 70%, increase via the terraform chart in the sso-dashboard repos"
   severity    = 4
   enabled     = true
 
