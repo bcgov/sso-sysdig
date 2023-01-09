@@ -212,6 +212,20 @@ resource "sysdig_monitor_alert_promql" "prod_backup_storage_pv_usage_gt_low" {
   }
 }
 
+resource "sysdig_monitor_alert_promql" "prod_minio_pvc_storage_low" {
+  name        = "[GOLD PROD] Minio PVC over 70%"
+  description = "The minio pvc is over 70%, increase via the terraform chart in "
+  severity    = 4
+  enabled     = true
+
+  promql                = "avg(kubelet_volume_stats_used_bytes{cluster=\"gold\", namespace=\"eb75ad-prod\", persistentvolumeclaim=\"export-sso-minio-.*\"} * 100 /\nkubelet_volume_stats_capacity_bytes{cluster=\"gold\", namespace=\"eb75ad-prod\", persistentvolumeclaim=\"export-sso-minio-.*\"}) by (persistentvolumeclaim) > 70"
+  trigger_after_minutes = 2
+
+  notification_channels = [45990, 57336, 57341]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
 
 resource "sysdig_monitor_alert_promql" "prod_db_pv_usage_low" {
   name        = "[GOLD CUST PROD] SSO DB PV over 60%"
