@@ -218,7 +218,7 @@ resource "sysdig_monitor_alert_promql" "prod_minio_pvc_storage_low" {
   severity    = 4
   enabled     = true
 
-  promql                = "avg(kubelet_volume_stats_used_bytes{cluster=\"gold\", namespace=\"eb75ad-prod\", persistentvolumeclaim=\"export-sso-minio-.*\"} * 100 /\nkubelet_volume_stats_capacity_bytes{cluster=\"gold\", namespace=\"eb75ad-prod\", persistentvolumeclaim=\"export-sso-minio-.*\"}) by (persistentvolumeclaim) > 70"
+  promql                = "avg(kubelet_volume_stats_used_bytes{ namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"export-sso-minio-.*\"} * 100 /\nkubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"export-sso-minio-.*\"}) by (persistentvolumeclaim) > 70"
   trigger_after_minutes = 2
 
   notification_channels = [45990, 57336, 57341]
