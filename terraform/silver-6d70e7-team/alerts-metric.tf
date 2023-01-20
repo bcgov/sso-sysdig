@@ -47,7 +47,7 @@ resource "sysdig_monitor_alert_metric" "patroni_backup_storage_low" {
   enabled               = true
   metric                = "max(avg(fs.used.percent)) > 85"
   trigger_after_minutes = 10
-  scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and kubernetes.deployment.name in (\"patroni-backup-storage\")"
+  scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and container.name in (\"backup-storage\")"
   notification_channels = [45990, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
