@@ -24,7 +24,7 @@ resource "sysdig_monitor_alert_metric" "prod_db_pods_high" {
   metric                = "sum(avg(kube_pod_sysdig_status_ready)) < 2"
   trigger_after_minutes = 5
 
-  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.pod.label.statefulset in (\"sso-patroni\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.pod.name contains (\"sso-patroni\")"
   multiple_alerts_by = []
 
   custom_notification {
@@ -41,7 +41,7 @@ resource "sysdig_monitor_alert_metric" "prod_db_pods_low" {
   metric                = "sum(avg(kube_pod_sysdig_status_ready)) < 2.5"
   trigger_after_minutes = 5
 
-  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.pod.label.statefulset in (\"sso-patroni\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"c6af30-prod\") and kubernetes.pod.name contains (\"sso-patroni\")"
   multiple_alerts_by = []
 
   custom_notification {
