@@ -233,7 +233,7 @@ resource "sysdig_monitor_alert_promql" "prod_db_pv_usage_low" {
   severity    = 4
   enabled     = true
 
-  promql                = "avg(kubelet_volume_stats_used_bytes{cluster=\"gold\", namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{cluster=\"gold\", namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 60"
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 60"
   trigger_after_minutes = 2
 
   notification_channels = [45990, 57336, 57341]
@@ -248,7 +248,7 @@ resource "sysdig_monitor_alert_promql" "prod_db_pv_usage_med" {
   severity    = 2
   enabled     = true
 
-  promql                = "avg(kubelet_volume_stats_used_bytes{cluster=\"gold\", namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{cluster=\"gold\", namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 80"
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 80"
   trigger_after_minutes = 2
 
   notification_channels = [45990, 57336, 57341]
