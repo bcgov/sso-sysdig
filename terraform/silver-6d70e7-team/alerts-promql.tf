@@ -150,6 +150,86 @@ resource "sysdig_monitor_alert_promql" "patroni_pvc_over_sixty" {
   }
 }
 
+resource "sysdig_monitor_alert_promql" "patroni_dev_pvc_over_ninety" {
+  name                  = "Patroni - Dev PVCs > 90% Terraform Silver"
+  description           = "Managed by terraform: To resolve, redeploy the patroni helm chart 'silver-patroni' in the sso-keycloak repo with an updated values file."
+  severity              = 4
+  enabled               = true
+  promql                = <<-EOT
+          avg(
+            kubelet_volume_stats_used_bytes{persistentvolumeclaim=~"storage-volume-sso-pgsql-dev-11-patroni-.*"}*100
+            /
+            kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"storage-volume-sso-pgsql-dev-11-patroni-.*"}
+          ) by (persistentvolumeclaim)
+          > 90
+          EOT
+  trigger_after_minutes = 10
+  notification_channels = [45990, 47291, 47595]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
+resource "sysdig_monitor_alert_promql" "patroni_dev_pvc_over_seventyfive" {
+  name                  = "Patroni - Dev PVCs > 75% Terraform Silver"
+  description           = "Managed by terraform: Only alert rocket chat and email for 75%."
+  severity              = 4
+  enabled               = true
+  promql                = <<-EOT
+          avg(
+            kubelet_volume_stats_used_bytes{persistentvolumeclaim=~"storage-volume-sso-pgsql-dev-11-patroni-.*"}*100
+            /
+            kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"storage-volume-sso-pgsql-dev-11-patroni-.*"}
+          ) by (persistentvolumeclaim)
+          > 75
+          EOT
+  trigger_after_minutes = 10
+  notification_channels = [45990, 47291]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
+resource "sysdig_monitor_alert_promql" "patroni_test_pvc_over_ninety" {
+  name                  = "Patroni - Test PVCs > 90% Terraform Silver"
+  description           = "Managed by terraform: To resolve, redeploy the patroni helm chart 'silver-patroni' in the sso-keycloak repo with an updated values file."
+  severity              = 4
+  enabled               = true
+  promql                = <<-EOT
+          avg(
+            kubelet_volume_stats_used_bytes{persistentvolumeclaim=~"storage-volume-sso-pgsql-test-11-patroni-.*"}*100
+            /
+            kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"storage-volume-sso-pgsql-test-11-patroni-.*"}
+          ) by (persistentvolumeclaim)
+          > 90
+          EOT
+  trigger_after_minutes = 10
+  notification_channels = [45990, 47291, 47595]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
+resource "sysdig_monitor_alert_promql" "patroni_test_pvc_over_seventyfive" {
+  name                  = "Patroni - Test PVCs > 75% Terraform Silver"
+  description           = "Managed by terraform: Only alert rocket chat and email for 75%."
+  severity              = 4
+  enabled               = true
+  promql                = <<-EOT
+          avg(
+            kubelet_volume_stats_used_bytes{persistentvolumeclaim=~"storage-volume-sso-pgsql-test-11-patroni-.*"}*100
+            /
+            kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"storage-volume-sso-pgsql-test-11-patroni-.*"}
+          ) by (persistentvolumeclaim)
+          > 75
+          EOT
+  trigger_after_minutes = 10
+  notification_channels = [45990, 47291]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
 resource "sysdig_monitor_alert_promql" "patroni_backup_pvc_over_sixty" {
   name                  = "Patroni - Backup PVC over 60% Terraform Silver"
   description           = "Managed by terraform: To resolve, redeploy the backup strorage helm chart in the sso-keycloak repo with an updated values file."

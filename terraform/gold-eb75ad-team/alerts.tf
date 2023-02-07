@@ -256,3 +256,63 @@ resource "sysdig_monitor_alert_promql" "prod_db_pv_usage_med" {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
 }
+
+resource "sysdig_monitor_alert_promql" "dev_db_pv_usage_seventyfive" {
+  name        = "[GOLD CUST DEV] SSO DB PV over 75%"
+  description = "only alert rocket chat and email for 75%"
+  severity    = 4
+  enabled     = true
+
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 75"
+  trigger_after_minutes = 2
+
+  notification_channels = [45990, 57336]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
+resource "sysdig_monitor_alert_promql" "dev_db_pv_usage_ninety" {
+  name        = "[GOLD CUST DEV] SSO DB PV over 90%"
+  description = ""
+  severity    = 4
+  enabled     = true
+
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 90"
+  trigger_after_minutes = 2
+
+  notification_channels = [45990, 57336, 57341]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
+resource "sysdig_monitor_alert_promql" "test_db_pv_usage_seventyfive" {
+  name        = "[GOLD CUST TEST] SSO DB PV over 75%"
+  description = "only alert rocket chat and email for 75%"
+  severity    = 4
+  enabled     = true
+
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 75"
+  trigger_after_minutes = 2
+
+  notification_channels = [45990, 57336]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
+resource "sysdig_monitor_alert_promql" "test_db_pv_usage_ninety" {
+  name        = "[GOLD CUST TEST] SSO DB PV over 90%"
+  description = ""
+  severity    = 4
+  enabled     = true
+
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 90"
+  trigger_after_minutes = 2
+
+  notification_channels = [45990, 57336, 57341]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
