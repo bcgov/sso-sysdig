@@ -259,7 +259,7 @@ resource "sysdig_monitor_alert_promql" "prod_db_pv_usage_med" {
 
 resource "sysdig_monitor_alert_promql" "dev_db_pv_usage_seventyfive" {
   name        = "[GOLD CUST DEV] SSO DB PV over 75%"
-  description = "only alert rocket chat and emainl for 75%"
+  description = "only alert rocket chat and email for 75%"
   severity    = 4
   enabled     = true
 
@@ -289,7 +289,7 @@ resource "sysdig_monitor_alert_promql" "dev_db_pv_usage_ninety" {
 
 resource "sysdig_monitor_alert_promql" "test_db_pv_usage_seventyfive" {
   name        = "[GOLD CUST TEST] SSO DB PV over 75%"
-  description = "only alert rocket chat and emainl for 75%"
+  description = "only alert rocket chat and email for 75%"
   severity    = 4
   enabled     = true
 
