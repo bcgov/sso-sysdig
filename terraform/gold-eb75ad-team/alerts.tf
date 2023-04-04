@@ -316,3 +316,57 @@ resource "sysdig_monitor_alert_promql" "test_db_pv_usage_ninety" {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
 }
+
+resource "sysdig_monitor_alert_metric" "dev_dr_pod" {
+  name        = "[GOLDDR DEV] Switchover Agent Pod Count"
+  description = "only alert rocket chat and email"
+  severity    = 4
+  enabled     = true
+
+  metric                = "sum(min(kube_pod_sysdig_status_ready)) < 1"
+  trigger_after_minutes = 15
+
+  scope              = "kubernetes.cluster.name in (\"golddr\") and kubernetes.namespace.name in (\"eb75ad-dev\") and kubernetes.pod.name contains \"switchover-agent\""
+  multiple_alerts_by = []
+
+  notification_channels = [45990, 57336]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
+resource "sysdig_monitor_alert_metric" "test_dr_pod" {
+  name        = "[GOLDDR TEST] Switchover Agent Pod Count"
+  description = "only alert rocket chat and email"
+  severity    = 4
+  enabled     = true
+
+  metric                = "sum(min(kube_pod_sysdig_status_ready)) < 1"
+  trigger_after_minutes = 15
+
+  scope              = "kubernetes.cluster.name in (\"golddr\") and kubernetes.namespace.name in (\"eb75ad-test\") and kubernetes.pod.name contains \"switchover-agent\""
+  multiple_alerts_by = []
+
+  notification_channels = [45990, 57336]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
+resource "sysdig_monitor_alert_metric" "prod_dr_pod" {
+  name        = "[GOLDDR PROD] Switchover Agent Pod Count"
+  description = "only alert rocket chat and email"
+  severity    = 4
+  enabled     = true
+
+  metric                = "sum(min(kube_pod_sysdig_status_ready)) < 1"
+  trigger_after_minutes = 15
+
+  scope              = "kubernetes.cluster.name in (\"golddr\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.pod.name contains \"switchover-agent\""
+  multiple_alerts_by = []
+
+  notification_channels = [45990, 57336]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}

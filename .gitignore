@@ -32,3 +32,5 @@ terraform.tfvars
 
 # Ignore Helm chart dependencies
 helm/**/charts
+
+get-pip.py
