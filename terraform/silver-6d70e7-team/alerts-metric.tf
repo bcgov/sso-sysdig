@@ -59,7 +59,7 @@ resource "sysdig_monitor_alert_metric" "pgsql_pod_restart_med" {
   description           = "Managed by terraform: undefined"
   severity              = 2
   enabled               = true
-  metric                = "sum(avg(kubernetes.pod.restart.count)) > 2"
+  metric                = "sum(avg(kubernetes.pod.restart.count)) > 3"
   trigger_after_minutes = 10
   scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and kube_workload_name in (\"sso-pgsql-prod-11-patroni\")"
   notification_channels = [45990, 47291, 47595]
