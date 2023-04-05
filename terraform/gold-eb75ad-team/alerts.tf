@@ -337,7 +337,7 @@ resource "sysdig_monitor_alert_metric" "dev_dr_pod" {
 
 resource "sysdig_monitor_alert_metric" "test_dr_pod" {
   name        = "[GOLDDR TEST] Switchover Agent Pod Count"
-  description = "only alert rocket chat and email"
+  description = "only alert rocket chat and email (rocket chat may be down)"
   severity    = 4
   enabled     = true
 
