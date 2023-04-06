@@ -337,7 +337,7 @@ resource "sysdig_monitor_alert_metric" "dev_dr_pod" {
 
 resource "sysdig_monitor_alert_metric" "test_dr_pod" {
   name        = "[GOLDDR TEST] Switchover Agent Pod Count"
-  description = "only alert rocket chat and email"
+  description = "only alert rocket chat and email (rocket chat may be down)"
   severity    = 4
   enabled     = true
 
@@ -369,4 +369,18 @@ resource "sysdig_monitor_alert_metric" "prod_dr_pod" {
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
+}
+
+resource "sysdig_monitor_alert_downtime" "dev_dr_pod_downtime" {
+  name                = "[GoldDR] Dev Switchover Downtime Alert"
+  description         = "Detects a downtime in the Kubernetes cluster"
+  severity            = 4
+  enabled             = false
+  entities_to_monitor = ["kubernetes.namespace.name"]
+  scope               = "kubernetes.cluster.name in (\"golddr\") and kubernetes.namespace.name in (\"eb75ad-dev\") and kubernetes.pod.name contains \"switchover-agent\""
+
+  notification_channels = [45990, 57336]
+
+  trigger_after_minutes = 10
+  trigger_after_pct     = 100
 }
