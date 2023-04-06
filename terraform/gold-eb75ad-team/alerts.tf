@@ -373,7 +373,7 @@ resource "sysdig_monitor_alert_metric" "prod_dr_pod" {
 
 resource "sysdig_monitor_alert_downtime" "dev_dr_pod_downtime" {
   name                = "[GoldDR] Dev Switchover Downtime Alert"
-  description         = "detects if the pod is up, but not healthy"
+  description         = "Detects a downtime in the Kubernetes cluster"
   severity            = 4
   enabled             = true
   entities_to_monitor = ["kubernetes.namespace.name"]
