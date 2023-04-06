@@ -319,12 +319,12 @@ resource "sysdig_monitor_alert_promql" "test_db_pv_usage_ninety" {
 
 resource "sysdig_monitor_alert_metric" "dev_dr_pod" {
   name        = "[GOLDDR DEV] Switchover Agent Pod Count"
-  description = "only alert rocket chat and email"
+  description = "detects if the pod is up, but not healthy"
   severity    = 4
   enabled     = true
 
   metric                = "sum(min(kube_pod_sysdig_status_ready)) < 1"
-  trigger_after_minutes = 15
+  trigger_after_minutes = 5
 
   scope              = "kubernetes.cluster.name in (\"golddr\") and kubernetes.namespace.name in (\"eb75ad-dev\") and kubernetes.pod.name contains \"switchover-agent\""
   multiple_alerts_by = []
@@ -337,12 +337,12 @@ resource "sysdig_monitor_alert_metric" "dev_dr_pod" {
 
 resource "sysdig_monitor_alert_metric" "test_dr_pod" {
   name        = "[GOLDDR TEST] Switchover Agent Pod Count"
-  description = "only alert rocket chat and email (rocket chat may be down)"
+  description = "detects if the pod is up, but not healthy"
   severity    = 4
   enabled     = true
 
   metric                = "sum(min(kube_pod_sysdig_status_ready)) < 1"
-  trigger_after_minutes = 15
+  trigger_after_minutes = 5
 
   scope              = "kubernetes.cluster.name in (\"golddr\") and kubernetes.namespace.name in (\"eb75ad-test\") and kubernetes.pod.name contains \"switchover-agent\""
   multiple_alerts_by = []
@@ -355,12 +355,12 @@ resource "sysdig_monitor_alert_metric" "test_dr_pod" {
 
 resource "sysdig_monitor_alert_metric" "prod_dr_pod" {
   name        = "[GOLDDR PROD] Switchover Agent Pod Count"
-  description = "only alert rocket chat and email"
+  description = "detects if the pod is up, but not healthy"
   severity    = 4
   enabled     = true
 
   metric                = "sum(min(kube_pod_sysdig_status_ready)) < 1"
-  trigger_after_minutes = 15
+  trigger_after_minutes = 5
 
   scope              = "kubernetes.cluster.name in (\"golddr\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.pod.name contains \"switchover-agent\""
   multiple_alerts_by = []
@@ -373,11 +373,39 @@ resource "sysdig_monitor_alert_metric" "prod_dr_pod" {
 
 resource "sysdig_monitor_alert_downtime" "dev_dr_pod_downtime" {
   name                = "[GoldDR] Dev Switchover Downtime Alert"
-  description         = "Detects a downtime in the Kubernetes cluster"
+  description         = "detects if the pod is up, but not healthy"
   severity            = 4
-  enabled             = false
+  enabled             = true
   entities_to_monitor = ["kubernetes.namespace.name"]
   scope               = "kubernetes.cluster.name in (\"golddr\") and kubernetes.namespace.name in (\"eb75ad-dev\") and kubernetes.pod.name contains \"switchover-agent\""
+
+  notification_channels = [45990, 57336]
+
+  trigger_after_minutes = 10
+  trigger_after_pct     = 100
+}
+
+resource "sysdig_monitor_alert_downtime" "test_dr_pod_downtime" {
+  name                = "[GoldDR] Test Switchover Downtime Alert"
+  description         = "Detects a downtime in the Kubernetes cluster"
+  severity            = 4
+  enabled             = true
+  entities_to_monitor = ["kubernetes.namespace.name"]
+  scope               = "kubernetes.cluster.name in (\"golddr\") and kubernetes.namespace.name in (\"eb75ad-test\") and kubernetes.pod.name contains \"switchover-agent\""
+
+  notification_channels = [45990, 57336]
+
+  trigger_after_minutes = 10
+  trigger_after_pct     = 100
+}
+
+resource "sysdig_monitor_alert_downtime" "prod_dr_pod_downtime" {
+  name                = "[GoldDR] Prod Switchover Downtime Alert"
+  description         = "Detects a downtime in the Kubernetes cluster"
+  severity            = 4
+  enabled             = true
+  entities_to_monitor = ["kubernetes.namespace.name"]
+  scope               = "kubernetes.cluster.name in (\"golddr\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.pod.name contains \"switchover-agent\""
 
   notification_channels = [45990, 57336]
 
