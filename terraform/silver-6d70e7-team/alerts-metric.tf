@@ -6,7 +6,7 @@ resource "sysdig_monitor_alert_metric" "sso_cpu_spike_med" {
   metric                = "avg(max(cpu.cores.used)) > 2"
   trigger_after_minutes = 5
   scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and kubernetes.pod.label.deploymentConfig in (\"sso-prod\")"
-  notification_channels = [45990, 47291, 47595]
+  notification_channels = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -20,7 +20,7 @@ resource "sysdig_monitor_alert_metric" "db_filesystem_limit_med" {
   metric                = "max(avg(fs.used.percent)) > 60"
   trigger_after_minutes = 10
   scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and kubernetes.pod.label.statefulset in (\"sso-pgsql-prod-11-patroni\")"
-  notification_channels = [45990, 47291, 47595]
+  notification_channels = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -34,7 +34,7 @@ resource "sysdig_monitor_alert_metric" "sso_pod_restart" {
   metric                = "sum(max(kubernetes.pod.restart.count)) >= 1"
   trigger_after_minutes = 10
   scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\")"
-  notification_channels = [45990, 47291, 47595]
+  notification_channels = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -48,7 +48,7 @@ resource "sysdig_monitor_alert_metric" "patroni_backup_storage_low" {
   metric                = "max(avg(fs.used.percent)) > 85"
   trigger_after_minutes = 10
   scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and container.name in (\"backup-storage\")"
-  notification_channels = [45990, 47291, 47595]
+  notification_channels = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -62,7 +62,7 @@ resource "sysdig_monitor_alert_metric" "pgsql_pod_restart_med" {
   metric                = "sum(avg(kubernetes.pod.restart.count)) > 3"
   trigger_after_minutes = 10
   scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and kube_workload_name in (\"sso-pgsql-prod-11-patroni\")"
-  notification_channels = [45990, 47291, 47595]
+  notification_channels = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -76,7 +76,7 @@ resource "sysdig_monitor_alert_metric" "keycloak_cpu_spike_high" {
   metric                = "avg(max(cpu.cores.used)) > 5"
   trigger_after_minutes = 5
   scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
-  notification_channels = [45990, 47291, 47595]
+  notification_channels = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -104,7 +104,7 @@ resource "sysdig_monitor_alert_metric" "sso_pods_down_med" {
   metric                = "sum(max(kube_pod_sysdig_status_ready)) < 6.0"
   trigger_after_minutes = 10
   scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
-  notification_channels = [45990]
+  notification_channels = [131970]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -118,7 +118,7 @@ resource "sysdig_monitor_alert_metric" "keycloak_cpu_elevated_high" {
   metric                = "sum(avg(cpu.cores.used)) > 5"
   trigger_after_minutes = 5
   scope                 = "kubernetes.deployment.name in (\"sso-keycloak\") and kubernetes.namespace.name in (\"6d70e7-prod\")"
-  notification_channels = [45990, 47291, 47595]
+  notification_channels = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -132,7 +132,7 @@ resource "sysdig_monitor_alert_metric" "patroni_pods_down_med" {
   metric                = "sum(avg(kube_pod_sysdig_status_ready)) < 2.5"
   trigger_after_minutes = 10
   scope                 = "kube_workload_name in (\"sso-pgsql-prod-11-patroni\")"
-  notification_channels = [45990]
+  notification_channels = [131970]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -146,7 +146,7 @@ resource "sysdig_monitor_alert_metric" "sso_pods_down_high" {
   metric                = "sum(max(kube_pod_sysdig_status_ready)) < 5.0"
   trigger_after_minutes = 5
   scope                 = "kubernetes.namespace.name in (\"6d70e7-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
-  notification_channels = [45990]
+  notification_channels = [131970]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -173,7 +173,7 @@ resource "sysdig_monitor_alert_metric" "patroni_pods_down_high" {
   metric                = "sum(avg(kube_pod_sysdig_status_ready)) < 2.0"
   trigger_after_minutes = 10
   scope                 = "kube_workload_name in (\"sso-pgsql-prod-11-patroni\")"
-  notification_channels = [45990]
+  notification_channels = [131970]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
