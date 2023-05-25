@@ -1,6 +1,6 @@
 resource "sysdig_monitor_alert_metric" "prod_db_pod_restarts_gte_1" {
   name        = "[GOLD SANDBOX PROD] DB - Pod Restarts"
-  description = ""
+  description = "a test description"
   severity    = 2
   enabled     = false
 
