@@ -15,7 +15,7 @@ resource "sysdig_monitor_alert_promql" "keycloak_pod_not_ready_med" {
       ) > 1
       EOT
   trigger_after_minutes = 8
-  notification_channels = [45990, 47291, 47595]
+  notification_channels = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -39,7 +39,7 @@ resource "sysdig_monitor_alert_promql" "keycloak_pod_not_ready_high" {
       ) > 2
       EOT
   trigger_after_minutes = 5
-  notification_channels = [45990, 47291, 47595]
+  notification_channels = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -63,7 +63,7 @@ resource "sysdig_monitor_alert_promql" "patroni_pod_not_ready_med" {
       ) >= 1
       EOT
   trigger_after_minutes = 5
-  notification_channels = [45990, 47291, 47595]
+  notification_channels = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -87,7 +87,7 @@ resource "sysdig_monitor_alert_promql" "patroni_pod_not_ready_high" {
       ) > 1
       EOT
   trigger_after_minutes = 5
-  notification_channels = [45990, 47291, 47595]
+  notification_channels = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -110,7 +110,7 @@ resource "sysdig_monitor_alert_promql" "keycloak_pod_not_ready_low" {
       ) >= 1
       EOT
   trigger_after_minutes = 15
-  notification_channels = [45990, 47291]
+  notification_channels = [131970, 47291]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -124,7 +124,7 @@ resource "sysdig_monitor_alert_promql" "db_pvc_sixty_percent" {
   promql                 = "avg(kubelet_volume_stats_used_bytes/kubelet_volume_stats_capacity_bytes) by (persistentvolumeclaim) >= 0.6"
   trigger_after_minutes  = 10
   renotification_minutes = 30
-  notification_channels  = [45990, 47291, 47595]
+  notification_channels  = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -144,7 +144,7 @@ resource "sysdig_monitor_alert_promql" "patroni_pvc_over_sixty" {
           > 60
           EOT
   trigger_after_minutes = 10
-  notification_channels = [45990, 47291, 47595]
+  notification_channels = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -164,7 +164,7 @@ resource "sysdig_monitor_alert_promql" "patroni_dev_pvc_over_ninety" {
           > 90
           EOT
   trigger_after_minutes = 10
-  notification_channels = [45990, 47291, 47595]
+  notification_channels = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -184,7 +184,7 @@ resource "sysdig_monitor_alert_promql" "patroni_dev_pvc_over_seventyfive" {
           > 75
           EOT
   trigger_after_minutes = 10
-  notification_channels = [45990, 47291]
+  notification_channels = [131970, 47291]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -204,7 +204,7 @@ resource "sysdig_monitor_alert_promql" "patroni_test_pvc_over_ninety" {
           > 90
           EOT
   trigger_after_minutes = 10
-  notification_channels = [45990, 47291, 47595]
+  notification_channels = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -224,7 +224,7 @@ resource "sysdig_monitor_alert_promql" "patroni_test_pvc_over_seventyfive" {
           > 75
           EOT
   trigger_after_minutes = 10
-  notification_channels = [45990, 47291]
+  notification_channels = [131970, 47291]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -243,7 +243,7 @@ resource "sysdig_monitor_alert_promql" "patroni_backup_pvc_over_sixty" {
     ) by (persistentvolumeclaim) > 60
   EOT
   trigger_after_minutes = 10
-  notification_channels = [45990, 47291]
+  notification_channels = [131970, 47291]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -263,7 +263,7 @@ resource "sysdig_monitor_alert_promql" "patroni_backup_pvc_over_eighty" {
       by (persistentvolumeclaim) > 80
     EOT
   trigger_after_minutes = 10
-  notification_channels = [45990, 47291, 47595]
+  notification_channels = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -282,7 +282,7 @@ resource "sysdig_monitor_alert_promql" "log_pvc_over_sixty" {
     ) by (persistentvolumeclaim) > 60
   EOT
   trigger_after_minutes = 10
-  notification_channels = [45990, 47291, 47595]
+  notification_channels = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -301,7 +301,7 @@ resource "sysdig_monitor_alert_promql" "log_pvc_over_eighty" {
     by (persistentvolumeclaim) > 80
   EOT
   trigger_after_minutes = 10
-  notification_channels = [45990, 47291, 47595]
+  notification_channels = [131970, 47291, 47595]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
