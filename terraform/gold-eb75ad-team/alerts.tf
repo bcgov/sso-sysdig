@@ -412,3 +412,48 @@ resource "sysdig_monitor_alert_downtime" "prod_dr_pod_downtime" {
   trigger_after_minutes = 10
   trigger_after_pct     = 100
 }
+
+resource "sysdig_monitor_alert_promql" "dev_kc_disk_log_pv_usage_sixty" {
+  name        = "[GOLD CUST DEV] SSO Keycloak Logs PV over 60%"
+  description = "only alert rocket chat and email for 60%"
+  severity    = 4
+  enabled     = true
+
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=\"sso-keycloak-logs\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=\"sso-keycloak-logs\"}) by (persistentvolumeclaim) > 60"
+  trigger_after_minutes = 2
+
+  notification_channels = [132277, 57336]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
+resource "sysdig_monitor_alert_promql" "test_kc_disk_log_pv_usage_sixty" {
+  name        = "[GOLD CUST TEST] SSO Keycloak Logs PV over 60%"
+  description = "only alert rocket chat and email for 60%"
+  severity    = 4
+  enabled     = true
+
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=\"sso-keycloak-logs\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=\"sso-keycloak-logs\"}) by (persistentvolumeclaim) > 60"
+  trigger_after_minutes = 2
+
+  notification_channels = [132277, 57336]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
+resource "sysdig_monitor_alert_promql" "prod_kc_disk_log_pv_usage_sixty" {
+  name        = "[GOLD CUST PROD] SSO Keycloak Logs PV over 60%"
+  description = "only alert rocket chat and email for 60%"
+  severity    = 4
+  enabled     = true
+
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=\"sso-keycloak-logs\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=\"sso-keycloak-logs\"}) by (persistentvolumeclaim) > 60"
+  trigger_after_minutes = 2
+
+  notification_channels = [132277, 57336]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
