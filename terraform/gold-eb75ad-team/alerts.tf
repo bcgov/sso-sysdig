@@ -47,7 +47,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_med" {
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
-  notification_channels = [132277, 57336]
+  notification_channels = [132277, 57336, 57341]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
@@ -66,7 +66,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_sustained" {
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
-  notification_channels = [132277, 57336, 57341]
+  notification_channels = [132277, 57336]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
