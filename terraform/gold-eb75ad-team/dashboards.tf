@@ -295,7 +295,7 @@ resource "sysdig_monitor_dashboard" "general_pod_performance" {
     pos_y       = 0
     width       = 8
     height      = 4
-    type        = "number"
+    type        = "timechart"
     name        = "Memory used by pod vs memory request keycloak"
     description = "Keycloak memory used by pods compared to the requested memory"
 
