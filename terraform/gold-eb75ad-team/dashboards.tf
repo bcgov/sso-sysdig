@@ -302,8 +302,62 @@ resource "sysdig_monitor_dashboard" "general_pod_performance" {
     query {
       promql = "(sum by (kube_workload_name,kube_pod_name,kube_cluster_name,kube_namespace_name)(rate(sysdig_container_memory_used_bytes{kube_namespace_name=~'eb75ad-prod',kube_cluster_name=~'gold', kube_workload_name=~'sso-keycloak'}[$__interval])))/ (sum by (kube_workload_name, kube_pod_name,kube_cluster_name,kube_namespace_name)(kube_pod_container_resource_requests{resource='memory',kube_namespace_name=~'eb75ad-prod',kube_cluster_name=~'gold', kube_workload_name=~'sso-keycloak'}))"
       unit   = "percent"
+      format {
+        decimals                = 2
+        display_format          = "auto"
+        input_format            = "0-1"
+        null_value_display_mode = "nullGap"
+        y_axis                  = "auto"
+      }
     }
   }
+
+  panel {
+    pos_x       = 0
+    pos_y       = 0
+    width       = 8
+    height      = 4
+    type        = "timechart"
+    name        = "Memory used by pod vs memory request patroni"
+    description = "Patroni memory used by pods compared to the requested memory"
+
+    query {
+      promql = "(sum by (kube_workload_name,kube_pod_name,kube_cluster_name,kube_namespace_name)(rate(sysdig_container_memory_used_bytes{kube_namespace_name=~'eb75ad-prod',kube_cluster_name=~'gold', kube_workload_name=~'sso-patroni'}[$__interval])))/ (sum by (kube_workload_name, kube_pod_name,kube_cluster_name,kube_namespace_name)(kube_pod_container_resource_requests{resource='memory',kube_namespace_name=~'eb75ad-prod',kube_cluster_name=~'gold', kube_workload_name=~'sso-patroni'}))"
+      unit   = "percent"
+      format {
+        decimals                = 2
+        display_format          = "auto"
+        input_format            = "0-1"
+        null_value_display_mode = "nullGap"
+        y_axis                  = "auto"
+      }
+    }
+  }
+
+  panel {
+    pos_x       = 0
+    pos_y       = 0
+    width       = 8
+    height      = 4
+    type        = "timechart"
+    name        = "HTTP Errors (4xx/5xx) per Pod Keycloak"
+    description = ""
+
+    query {
+      promql = "topk(20,sum(sum_over_time(sysdig_container_net_http_error_count{kube_cluster_name=~'gold', kube_workload_name=~'sso-keycloak'}[$__interval])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name)) / $__interval_sec"
+      unit   = "number rate"
+      format {
+        input_format            = "ns"
+        decimals                = 2
+        display_format          = "auto"
+        null_value_display_mode = "nullGap"
+        y_axis                  = "auto"
+      }
+    }
+  }
+
+
+
 
 
 
