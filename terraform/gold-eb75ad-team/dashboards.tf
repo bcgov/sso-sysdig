@@ -306,7 +306,7 @@ resource "sysdig_monitor_dashboard" "general_pod_performance" {
   }
 
   panel {
-    pos_x       = 0
+    pos_x       = 8
     pos_y       = 0
     width       = 8
     height      = 4
@@ -322,7 +322,7 @@ resource "sysdig_monitor_dashboard" "general_pod_performance" {
 
   panel {
     pos_x       = 0
-    pos_y       = 0
+    pos_y       = 4
     width       = 8
     height      = 4
     type        = "timechart"
@@ -335,7 +335,20 @@ resource "sysdig_monitor_dashboard" "general_pod_performance" {
     }
   }
 
+  panel {
+    pos_x       = 8
+    pos_y       = 4
+    width       = 8
+    height      = 4
+    type        = "timechart"
+    name        = "HTTP Errors (4xx/5xx) per Pod Patroni"
+    description = ""
 
+    query {
+      promql = "topk(20,sum(sum_over_time(sysdig_container_net_http_error_count{kube_cluster_name=~'gold', kube_workload_name=~'sso-patroni'}[$__interval])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name)) / $__interval_sec"
+      unit   = "number rate"
+    }
+  }
 
 
 
