@@ -348,10 +348,83 @@ resource "sysdig_monitor_dashboard" "general_pod_performance" {
       promql = "topk(20,sum(sum_over_time(sysdig_container_net_http_error_count{kube_cluster_name=~'gold', kube_workload_name=~'sso-patroni'}[$__interval])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name)) / $__interval_sec"
       unit   = "number rate"
     }
+
   }
 
+  panel {
+    pos_x       = 0
+    pos_y       = 8
+    width       = 16
+    height      = 6
+    type        = "timechart"
+    name        = "CPU usage per keycloak pod"
+    description = ""
 
+    query {
+      promql = "sysdig_container_cpu_cores_used{$__scope, kube_deployment_name='sso-keycloak'}"
+      unit   = "number rate"
+    }
+  }
 
+  panel {
+    pos_x       = 0
+    pos_y       = 14
+    width       = 16
+    height      = 4
+    type        = "timechart"
+    name        = "Network Traffic Inbound per Pod"
+    description = ""
+
+    query {
+      promql = "topk(10,sum(sum_over_time(sysdig_container_net_in_bytes{kube_cluster_name=~'gold', kube_workload_name=~'sso-keycloak', kube_namespace_name='eb75ad-prod'}[$__interval])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name) / $__interval_sec)"
+      unit   = "data rate"
+    }
+  }
+
+  panel {
+    pos_x       = 0
+    pos_y       = 18
+    width       = 16
+    height      = 4
+    type        = "timechart"
+    name        = "Network Traffic Outbound per Pod"
+    description = ""
+
+    query {
+      promql = "topk(10,sum(sum_over_time(sysdig_container_net_out_bytes{kube_cluster_name=~'gold', kube_workload_name=~'sso-keycloak', kube_namespace_name='eb75ad-prod'}[$__interval])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name) / $__interval_sec)"
+      unit   = "data rate"
+    }
+  }
+
+  panel {
+    pos_x       = 0
+    pos_y       = 22
+    width       = 16
+    height      = 4
+    type        = "timechart"
+    name        = "Requests per pod"
+    description = ""
+
+    query {
+      promql = "topk(20,sum(sum_over_time(sysdig_container_net_request_count{kube_cluster_name=~'gold', kube_workload_name=~'sso-keycloak', kube_namespace_name='eb75ad-prod'}[$__interval])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name) / $__interval_sec)"
+      unit   = "number rate"
+    }
+  }
+
+  panel {
+    pos_x       = 0
+    pos_y       = 26
+    width       = 16
+    height      = 4
+    type        = "timechart"
+    name        = "Connections per Pod"
+    description = ""
+
+    query {
+      promql = "topk(20,sum(sum_over_time(sysdig_container_net_connection_total_count{kube_cluster_name=~'gold', kube_workload_name=~'sso-keycloak', kube_namespace_name='eb75ad-prod'}[$__interval])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name) / $__interval_sec)"
+      unit   = "number rate"
+    }
+  }
 
 
 }
