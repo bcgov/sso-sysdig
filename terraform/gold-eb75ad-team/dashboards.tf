@@ -348,8 +348,8 @@ resource "sysdig_monitor_dashboard" "general_pod_performance" {
       promql = "topk(20,sum(sum_over_time(sysdig_container_net_http_error_count{kube_cluster_name=~'gold', kube_workload_name=~'sso-patroni'}[$__interval])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name)) / $__interval_sec"
       unit   = "number rate"
     }
-  }
 
+  }
 
   panel {
     pos_x       = 0
