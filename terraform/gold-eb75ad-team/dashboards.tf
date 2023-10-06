@@ -262,3 +262,83 @@ resource "sysdig_monitor_dashboard" "pods_cpu" {
     }
   }
 }
+
+
+resource "sysdig_monitor_dashboard" "general_pod_performance" {
+  name        = "Memory Network and CPU for pods"
+  description = "The general perfomance dashboard for production prod"
+
+  share {
+    role = "ROLE_RESOURCE_EDIT"
+    member {
+      type = "TEAM"
+      id   = 40193
+    }
+  }
+
+  scope {
+    metric     = "kube_cluster_name"
+    comparator = "in"
+    value      = ["gold"]
+    variable   = "cluster_name"
+  }
+
+  scope {
+    metric     = "kube_namespace_name"
+    comparator = "in"
+    value      = ["eb75ad-prod"]
+    variable   = "namespace_name"
+  }
+
+  panel {
+    pos_x       = 0
+    pos_y       = 0
+    width       = 8
+    height      = 4
+    type        = "timechart"
+    name        = "Memory used by pod vs memory request keycloak"
+    description = "Keycloak memory used by pods compared to the requested memory factor of 100 added to fix dispaly"
+
+    query {
+      promql = "(sum by (kube_workload_name,kube_pod_name,kube_cluster_name,kube_namespace_name)(rate(sysdig_container_memory_used_bytes{kube_namespace_name=~'eb75ad-prod',kube_cluster_name=~'gold', kube_workload_name=~'sso-keycloak'}[$__interval])))*100/ (sum by (kube_workload_name, kube_pod_name,kube_cluster_name,kube_namespace_name)(kube_pod_container_resource_requests{resource='memory',kube_namespace_name=~'eb75ad-prod',kube_cluster_name=~'gold', kube_workload_name=~'sso-keycloak'}))"
+      unit   = "percent"
+    }
+  }
+
+  panel {
+    pos_x       = 0
+    pos_y       = 0
+    width       = 8
+    height      = 4
+    type        = "timechart"
+    name        = "Memory used by pod vs memory request patroni"
+    description = "Patroni memory used by pods compared to the requested memory. Factor of 100 added to fix dispaly"
+
+    query {
+      promql = "(sum by (kube_workload_name,kube_pod_name,kube_cluster_name,kube_namespace_name)(rate(sysdig_container_memory_used_bytes{kube_namespace_name=~'eb75ad-prod',kube_cluster_name=~'gold', kube_workload_name=~'sso-patroni'}[$__interval])))*100/ (sum by (kube_workload_name, kube_pod_name,kube_cluster_name,kube_namespace_name)(kube_pod_container_resource_requests{resource='memory',kube_namespace_name=~'eb75ad-prod',kube_cluster_name=~'gold', kube_workload_name=~'sso-patroni'}))"
+      unit   = "percent"
+    }
+  }
+
+  panel {
+    pos_x       = 0
+    pos_y       = 0
+    width       = 8
+    height      = 4
+    type        = "timechart"
+    name        = "HTTP Errors (4xx/5xx) per Pod Keycloak"
+    description = ""
+
+    query {
+      promql = "topk(20,sum(sum_over_time(sysdig_container_net_http_error_count{kube_cluster_name=~'gold', kube_workload_name=~'sso-keycloak'}[$__interval])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name)) / $__interval_sec"
+      unit   = "number rate"
+    }
+  }
+
+
+
+
+
+
+
+}
