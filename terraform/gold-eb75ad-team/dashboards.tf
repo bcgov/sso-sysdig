@@ -297,7 +297,7 @@ resource "sysdig_monitor_dashboard" "general_pod_performance" {
     height      = 4
     type        = "timechart"
     name        = "Memory used by pod vs memory request keycloak"
-    description = "Keycloak memory used by pods compared to the requested memory factor of 100 added to fix dispaly"
+    description = "Keycloak memory used by pods compared to the requested memory factor of 100 added to fix display"
 
     query {
       promql = "(sum by (kube_workload_name,kube_pod_name,kube_cluster_name,kube_namespace_name)(rate(sysdig_container_memory_used_bytes{kube_namespace_name=~'eb75ad-prod',kube_cluster_name=~'gold', kube_workload_name=~'sso-keycloak'}[$__interval])))*100/ (sum by (kube_workload_name, kube_pod_name,kube_cluster_name,kube_namespace_name)(kube_pod_container_resource_requests{resource='memory',kube_namespace_name=~'eb75ad-prod',kube_cluster_name=~'gold', kube_workload_name=~'sso-keycloak'}))"
@@ -312,7 +312,7 @@ resource "sysdig_monitor_dashboard" "general_pod_performance" {
     height      = 4
     type        = "timechart"
     name        = "Memory used by pod vs memory request patroni"
-    description = "Patroni memory used by pods compared to the requested memory. Factor of 100 added to fix dispaly"
+    description = "Patroni memory used by pods compared to the requested memory. Factor of 100 added to fix display"
 
     query {
       promql = "(sum by (kube_workload_name,kube_pod_name,kube_cluster_name,kube_namespace_name)(rate(sysdig_container_memory_used_bytes{kube_namespace_name=~'eb75ad-prod',kube_cluster_name=~'gold', kube_workload_name=~'sso-patroni'}[$__interval])))*100/ (sum by (kube_workload_name, kube_pod_name,kube_cluster_name,kube_namespace_name)(kube_pod_container_resource_requests{resource='memory',kube_namespace_name=~'eb75ad-prod',kube_cluster_name=~'gold', kube_workload_name=~'sso-patroni'}))"
