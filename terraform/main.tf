@@ -7,3 +7,8 @@ module "eb75ad-team" {
   source                   = "./gold-eb75ad-team"
   sysdig_monitor_api_token = var.gold_eb75ad_team_sysdig_monitor_api_token
 }
+
+module "e4ca1d-team" {
+  source                   = "./gold-e4ca1d-team"
+  sysdig_monitor_api_token = var.gold_e4ca1d_team_sysdig_monitor_api_token
+}
