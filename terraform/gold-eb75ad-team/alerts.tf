@@ -147,13 +147,13 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_log_pv_med" {
 resource "sysdig_monitor_alert_metric" "prod_db_pod_restarts_gte_1" {
   name        = "[GOLD CUST PROD] DB - Pod Restarts"
   description = ""
-  severity    = 2
+  severity    = 4
   enabled     = true
 
   metric                = "sum(avg(kube_pod_sysdig_restart_count)) >= 1"
   trigger_after_minutes = 2
 
-  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.pod.label.statefulset in (\"sso-patroni\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.statefulset.name in (\"sso-patroni\")"
   multiple_alerts_by = []
 
   notification_channels = [132277, 57336, 57341]
@@ -187,7 +187,7 @@ resource "sysdig_monitor_alert_metric" "prod_db_pods_low" {
   enabled     = true
 
   metric                = "sum(avg(kube_pod_sysdig_status_ready)) < 2.5"
-  trigger_after_minutes = 2
+  trigger_after_minutes = 5
 
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.pod.name contains \"sso-patroni\""
   multiple_alerts_by = []
@@ -208,6 +208,42 @@ resource "sysdig_monitor_alert_metric" "prod_backup_storage_pv_usage_gt_med" {
   trigger_after_minutes = 2
 
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-backup-storage\")"
+  multiple_alerts_by = []
+
+  notification_channels = [132277, 57336, 57341]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
+resource "sysdig_monitor_alert_metric" "dev_backup_storage_pv_usage_gt_med" {
+  name        = "[GOLD CUST DEV] DB Backup - storage 85%"
+  description = ""
+  severity    = 4
+  enabled     = true
+
+  metric                = "max(avg(sysdig_container_fs_used_percent)) > 85"
+  trigger_after_minutes = 2
+
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-dev\") and kubernetes.deployment.name in (\"sso-backup-storage\")"
+  multiple_alerts_by = []
+
+  notification_channels = [132277, 57336, 57341]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
+resource "sysdig_monitor_alert_metric" "test_backup_storage_pv_usage_gt_med" {
+  name        = "[GOLD CUST TEST] DB Backup - storage 85%"
+  description = ""
+  severity    = 4
+  enabled     = true
+
+  metric                = "max(avg(sysdig_container_fs_used_percent)) > 85"
+  trigger_after_minutes = 2
+
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-test\") and kubernetes.deployment.name in (\"sso-backup-storage\")"
   multiple_alerts_by = []
 
   notification_channels = [132277, 57336, 57341]
