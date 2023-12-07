@@ -199,12 +199,12 @@ resource "sysdig_monitor_alert_metric" "prod_db_pods_low" {
 }
 
 resource "sysdig_monitor_alert_metric" "prod_backup_storage_pv_usage_gt_med" {
-  name        = "[GOLD CUST PROD] DB Backup - storage 85%"
+  name        = "[GOLD CUST PROD] DB Backup - storage 80%"
   description = ""
-  severity    = 2
+  severity    = 4
   enabled     = true
 
-  metric                = "max(avg(sysdig_container_fs_used_percent)) > 85"
+  metric                = "max(avg(sysdig_container_fs_used_percent)) > 80"
   trigger_after_minutes = 2
 
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-backup-storage\")"
@@ -245,21 +245,6 @@ resource "sysdig_monitor_alert_metric" "test_backup_storage_pv_usage_gt_med" {
 
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-test\") and kubernetes.deployment.name in (\"sso-backup-storage\")"
   multiple_alerts_by = []
-
-  notification_channels = [132277, 57336, 57341]
-  custom_notification {
-    title = "{{__alert_name__}} is {{__alert_status__}}"
-  }
-}
-
-resource "sysdig_monitor_alert_promql" "prod_backup_storage_pv_usage_gt_low" {
-  name        = "[GOLD CUST PROD] DB Backup PV over 60%"
-  description = ""
-  severity    = 4
-  enabled     = true
-
-  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=\"sso-backup-storage-backup-pvc\"} * 100 /\nkubelet_volume_stats_capacity_bytes{ namespace=\"eb75ad-prod\", persistentvolumeclaim=\"sso-backup-storage-backup-pvc\"}) by (persistentvolumeclaim) > 60"
-  trigger_after_minutes = 2
 
   notification_channels = [132277, 57336, 57341]
   custom_notification {
