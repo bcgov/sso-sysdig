@@ -78,7 +78,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_high" {
   severity    = 0
   enabled     = true
 
-  metric                = "sum(min(kube_pod_sysdig_status_ready)) < 3"
+  metric                = "sum(min(kube_pod_sysdig_status_ready)) < 4"
   trigger_after_minutes = 2
 
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
@@ -96,7 +96,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_med" {
   severity    = 2
   enabled     = true
 
-  metric                = "sum(min(kube_pod_sysdig_status_ready)) < 4"
+  metric                = "sum(min(kube_pod_sysdig_status_ready)) < 6"
   trigger_after_minutes = 2
 
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
@@ -114,7 +114,25 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_low" {
   severity    = 4
   enabled     = true
 
-  metric                = "sum(max(kube_pod_sysdig_status_ready)) < 5"
+  metric                = "sum(max(kube_pod_sysdig_status_ready)) < 7"
+  trigger_after_minutes = 2
+
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
+  multiple_alerts_by = []
+
+  notification_channels = [132277, 57336, 57341]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
+resource "sysdig_monitor_alert_metric" "prod_keycloak_log_pv_high" {
+  name        = "[GOLD CUST PROD] SSO - Log PV Usage over 90%"
+  description = ""
+  severity    = 0
+  enabled     = true
+
+  metric                = "max(avg(sysdig_container_fs_used_percent)) > 90"
   trigger_after_minutes = 2
 
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
@@ -129,7 +147,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_low" {
 resource "sysdig_monitor_alert_metric" "prod_keycloak_log_pv_med" {
   name        = "[GOLD CUST PROD] SSO - Log PV Usage over 70%"
   description = ""
-  severity    = 2
+  severity    = 4
   enabled     = true
 
   metric                = "max(avg(sysdig_container_fs_used_percent)) > 70"
@@ -289,6 +307,21 @@ resource "sysdig_monitor_alert_promql" "prod_db_pv_usage_med" {
   enabled     = true
 
   promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 80"
+  trigger_after_minutes = 2
+
+  notification_channels = [132277, 57336, 57341]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
+resource "sysdig_monitor_alert_promql" "prod_db_pv_usage_high" {
+  name        = "[GOLD CUST PROD] SSO DB PV over 90%"
+  description = ""
+  severity    = 0
+  enabled     = true
+
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 90"
   trigger_after_minutes = 2
 
   notification_channels = [132277, 57336, 57341]
