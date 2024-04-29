@@ -127,8 +127,8 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_low" {
 }
 
 resource "sysdig_monitor_alert_metric" "prod_keycloak_log_pv_high" {
-  name        = "[GOLD CUST PROD] SSO - Log PV Usage over 90%"
-  description = ""
+  name        = "[GOLD CUST PROD] SSO - Keycloak Filesystem and Log Usage over 90%"
+  description = "This container filesystem is filling up, may include PVC logs, or the non persistent files."
   severity    = 0
   enabled     = true
 
@@ -145,8 +145,8 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_log_pv_high" {
 }
 
 resource "sysdig_monitor_alert_metric" "prod_keycloak_log_pv_med" {
-  name        = "[GOLD CUST PROD] SSO - Log PV Usage over 70%"
-  description = ""
+  name        = "[GOLD CUST PROD] SSO - Keycloak Filesystem andLog PV Usage over 70%"
+  description = "This container filesystem is filling up, may include PVC logs, or the non persistent files."
   severity    = 4
   enabled     = true
 
@@ -218,7 +218,7 @@ resource "sysdig_monitor_alert_metric" "prod_db_pods_low" {
 
 resource "sysdig_monitor_alert_metric" "prod_backup_storage_pv_usage_gt_med" {
   name        = "[GOLD CUST PROD] DB Backup - storage 80%"
-  description = ""
+  description = "This uses the filesystem as a proxy for PVC space."
   severity    = 4
   enabled     = true
 
@@ -236,7 +236,7 @@ resource "sysdig_monitor_alert_metric" "prod_backup_storage_pv_usage_gt_med" {
 
 resource "sysdig_monitor_alert_metric" "dev_backup_storage_pv_usage_gt_med" {
   name        = "[GOLD CUST DEV] DB Backup - storage 85%"
-  description = ""
+  description = "This uses the filesystem as a proxy for PVC space."
   severity    = 4
   enabled     = true
 
@@ -254,7 +254,7 @@ resource "sysdig_monitor_alert_metric" "dev_backup_storage_pv_usage_gt_med" {
 
 resource "sysdig_monitor_alert_metric" "test_backup_storage_pv_usage_gt_med" {
   name        = "[GOLD CUST TEST] DB Backup - storage 85%"
-  description = ""
+  description = "This uses the filesystem as a proxy for PVC space."
   severity    = 4
   enabled     = true
 
