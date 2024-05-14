@@ -127,8 +127,8 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_low" {
 }
 
 resource "sysdig_monitor_alert_metric" "prod_keycloak_log_pv_high" {
-  name        = "[GOLD CUST PROD] SSO - Log PV Usage over 90%"
-  description = ""
+  name        = "[GOLD CUST PROD] SSO - Keycloak Filesystem usage over 90%"
+  description = "This container filesystem is filling up."
   severity    = 0
   enabled     = true
 
@@ -145,8 +145,8 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_log_pv_high" {
 }
 
 resource "sysdig_monitor_alert_metric" "prod_keycloak_log_pv_med" {
-  name        = "[GOLD CUST PROD] SSO - Log PV Usage over 70%"
-  description = ""
+  name        = "[GOLD CUST PROD] SSO - Keycloak Filesystem Usage over 70%"
+  description = "This container filesystem is filling up."
   severity    = 4
   enabled     = true
 
@@ -216,17 +216,14 @@ resource "sysdig_monitor_alert_metric" "prod_db_pods_low" {
   }
 }
 
-resource "sysdig_monitor_alert_metric" "prod_backup_storage_pv_usage_gt_med" {
+resource "sysdig_monitor_alert_promql" "prod_backup_storage_pv_usage_gt_med" {
   name        = "[GOLD CUST PROD] DB Backup - storage 80%"
-  description = ""
+  description = "This uses the filesystem as a proxy for PVC space."
   severity    = 4
   enabled     = true
+  promql      = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"sso-backup-storage-backup-pvc\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"sso-backup-storage-backup-pvc\"}) by (persistentvolumeclaim) > 80"
 
-  metric                = "max(avg(sysdig_container_fs_used_percent)) > 80"
   trigger_after_minutes = 2
-
-  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-backup-storage\")"
-  multiple_alerts_by = []
 
   notification_channels = [132277, 57336, 57341]
   custom_notification {
@@ -234,17 +231,14 @@ resource "sysdig_monitor_alert_metric" "prod_backup_storage_pv_usage_gt_med" {
   }
 }
 
-resource "sysdig_monitor_alert_metric" "dev_backup_storage_pv_usage_gt_med" {
+resource "sysdig_monitor_alert_promql" "dev_backup_storage_pv_usage_gt_med" {
   name        = "[GOLD CUST DEV] DB Backup - storage 85%"
-  description = ""
+  description = "This uses the filesystem as a proxy for PVC space."
   severity    = 4
   enabled     = true
 
-  metric                = "max(avg(sysdig_container_fs_used_percent)) > 85"
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"sso-backup-storage-backup-pvc\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"sso-backup-storage-backup-pvc\"}) by (persistentvolumeclaim) > 85"
   trigger_after_minutes = 2
-
-  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-dev\") and kubernetes.deployment.name in (\"sso-backup-storage\")"
-  multiple_alerts_by = []
 
   notification_channels = [132277, 57336, 57341]
   custom_notification {
@@ -252,17 +246,14 @@ resource "sysdig_monitor_alert_metric" "dev_backup_storage_pv_usage_gt_med" {
   }
 }
 
-resource "sysdig_monitor_alert_metric" "test_backup_storage_pv_usage_gt_med" {
+resource "sysdig_monitor_alert_promql" "test_backup_storage_pv_usage_gt_med" {
   name        = "[GOLD CUST TEST] DB Backup - storage 85%"
-  description = ""
+  description = "This uses the filesystem as a proxy for PVC space."
   severity    = 4
   enabled     = true
 
-  metric                = "max(avg(sysdig_container_fs_used_percent)) > 85"
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"sso-backup-storage-backup-pvc\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"sso-backup-storage-backup-pvc\"}) by (persistentvolumeclaim) > 85"
   trigger_after_minutes = 2
-
-  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-test\") and kubernetes.deployment.name in (\"sso-backup-storage\")"
-  multiple_alerts_by = []
 
   notification_channels = [132277, 57336, 57341]
   custom_notification {
@@ -286,12 +277,12 @@ resource "sysdig_monitor_alert_promql" "prod_minio_pvc_storage_low" {
 }
 
 resource "sysdig_monitor_alert_promql" "prod_db_pv_usage_low" {
-  name        = "[GOLD CUST PROD] SSO DB PV over 60%"
-  description = ""
+  name        = "[GOLD/GOLDDR CUST PROD] SSO DB PV over 60%"
+  description = "This alert covers both gold and golddr pvcs"
   severity    = 4
   enabled     = true
 
-  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 60"
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim, kube_cluster_name) > 60"
   trigger_after_minutes = 2
 
   notification_channels = [132277, 57336, 57341]
@@ -301,12 +292,12 @@ resource "sysdig_monitor_alert_promql" "prod_db_pv_usage_low" {
 }
 
 resource "sysdig_monitor_alert_promql" "prod_db_pv_usage_med" {
-  name        = "[GOLD CUST PROD] SSO DB PV over 80%"
-  description = ""
+  name        = "[GOLD/GOLDDR CUST PROD] SSO DB PV over 80%"
+  description = "This alert covers both gold and golddr pvcs"
   severity    = 2
   enabled     = true
 
-  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 80"
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim, kube_cluster_name) > 80"
   trigger_after_minutes = 2
 
   notification_channels = [132277, 57336, 57341]
@@ -316,12 +307,12 @@ resource "sysdig_monitor_alert_promql" "prod_db_pv_usage_med" {
 }
 
 resource "sysdig_monitor_alert_promql" "prod_db_pv_usage_high" {
-  name        = "[GOLD CUST PROD] SSO DB PV over 90%"
-  description = ""
+  name        = "[GOLD/GOLDDR CUST PROD] SSO DB PV over 90%"
+  description = "This alert covers both gold and golddr pvcs"
   severity    = 0
   enabled     = true
 
-  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 90"
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim, kube_cluster_name) > 90"
   trigger_after_minutes = 2
 
   notification_channels = [132277, 57336, 57341]
@@ -331,12 +322,12 @@ resource "sysdig_monitor_alert_promql" "prod_db_pv_usage_high" {
 }
 
 resource "sysdig_monitor_alert_promql" "dev_db_pv_usage_seventyfive" {
-  name        = "[GOLD CUST DEV] SSO DB PV over 75%"
-  description = "only alert rocket chat and email for 75%"
+  name        = "[GOLD/GOLDDR CUST DEV] SSO DB PV over 75%"
+  description = "This alert covers both gold and golddr pvcs,only alert rocket chat and email for 75%"
   severity    = 4
   enabled     = true
 
-  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 75"
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim, kube_cluster_name) > 75"
   trigger_after_minutes = 2
 
   notification_channels = [132277, 57336]
@@ -346,12 +337,12 @@ resource "sysdig_monitor_alert_promql" "dev_db_pv_usage_seventyfive" {
 }
 
 resource "sysdig_monitor_alert_promql" "dev_db_pv_usage_ninety" {
-  name        = "[GOLD CUST DEV] SSO DB PV over 90%"
-  description = ""
+  name        = "[GOLD/GOLDDR CUST DEV] SSO DB PV over 90%"
+  description = "This alert covers both gold and golddr pvcs"
   severity    = 4
   enabled     = true
 
-  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 90"
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim, kube_cluster_name) > 90"
   trigger_after_minutes = 2
 
   notification_channels = [132277, 57336, 57341]
@@ -361,12 +352,12 @@ resource "sysdig_monitor_alert_promql" "dev_db_pv_usage_ninety" {
 }
 
 resource "sysdig_monitor_alert_promql" "test_db_pv_usage_seventyfive" {
-  name        = "[GOLD CUST TEST] SSO DB PV over 75%"
-  description = "only alert rocket chat and email for 75%"
+  name        = "[GOLD/GOLDDR CUST TEST] SSO DB PV over 75%"
+  description = "This alert covers both gold and golddr pvcs, only alert rocket chat and email for 75%"
   severity    = 4
   enabled     = true
 
-  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 75"
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim, kube_cluster_name) > 75"
   trigger_after_minutes = 2
 
   notification_channels = [132277, 57336]
@@ -376,12 +367,12 @@ resource "sysdig_monitor_alert_promql" "test_db_pv_usage_seventyfive" {
 }
 
 resource "sysdig_monitor_alert_promql" "test_db_pv_usage_ninety" {
-  name        = "[GOLD CUST TEST] SSO DB PV over 90%"
-  description = ""
+  name        = "[GOLD/GOLDDR CUST TEST] SSO DB PV over 90%"
+  description = "This alert covers both gold and golddr pvcs"
   severity    = 4
   enabled     = true
 
-  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim) > 90"
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"storage-volume-sso-patroni-.*\"}) by (persistentvolumeclaim, kube_cluster_name) > 90"
   trigger_after_minutes = 2
 
   notification_channels = [132277, 57336, 57341]
