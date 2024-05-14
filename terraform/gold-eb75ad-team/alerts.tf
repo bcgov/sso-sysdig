@@ -60,13 +60,13 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_sustained" {
   severity    = 4
   enabled     = true
 
-  metric                = "max(avg(sysdig_container_cpu_cores_used)) >= 0.20"
+  metric                = "max(avg(sysdig_container_cpu_cores_used)) >= 0.50"
   trigger_after_minutes = 30
 
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
-  notification_channels = [132277, 57336]
+  notification_channels = [132277, 57336, 57341]
   custom_notification {
     title = "{{__alert_name__}} is {{__alert_status__}}"
   }
