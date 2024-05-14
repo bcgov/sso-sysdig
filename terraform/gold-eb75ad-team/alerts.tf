@@ -530,7 +530,7 @@ resource "sysdig_monitor_alert_promql" "prod_gold_cpu_limit" {
   severity    = 2
   enabled     = true
 
-  promql                = "(kube_resourcequota_sysdig_limits_cpu_hard -kube_resourcequota_sysdig_limits_cpu_used{namespace=\"eb75ad-prod\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) > 7"
+  promql                = "(kube_resourcequota_sysdig_limits_cpu_hard -kube_resourcequota_sysdig_limits_cpu_used{namespace=\"eb75ad-prod\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 7"
   trigger_after_minutes = 2
 
   notification_channels = [132277, 57336]
@@ -547,7 +547,7 @@ resource "sysdig_monitor_alert_promql" "test_gold_cpu_limit" {
   severity    = 4
   enabled     = true
 
-  promql                = "(kube_resourcequota_sysdig_limits_cpu_hard -kube_resourcequota_sysdig_limits_cpu_used{namespace=\"eb75ad-test\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) > 7"
+  promql                = "(kube_resourcequota_sysdig_limits_cpu_hard -kube_resourcequota_sysdig_limits_cpu_used{namespace=\"eb75ad-test\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 7"
   trigger_after_minutes = 2
 
   notification_channels = [132277, 57336]
@@ -564,7 +564,7 @@ resource "sysdig_monitor_alert_promql" "dev_gold_cpu_limit" {
   severity    = 4
   enabled     = true
 
-  promql                = "(kube_resourcequota_sysdig_limits_cpu_hard -kube_resourcequota_sysdig_limits_cpu_used{namespace=\"eb75ad-dev\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) > 7"
+  promql                = "(kube_resourcequota_sysdig_limits_cpu_hard -kube_resourcequota_sysdig_limits_cpu_used{namespace=\"eb75ad-dev\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 7"
   trigger_after_minutes = 2
 
   notification_channels = [132277, 57336]
@@ -581,7 +581,7 @@ resource "sysdig_monitor_alert_promql" "prod_gold_memory_limit" {
   severity    = 2
   enabled     = true
 
-  promql                = "(kube_resourcequota_sysdig_limits_memory_hard -kube_resourcequota_sysdig_limits_memory_used{namespace=\"eb75ad-prod\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) > 16000000000"
+  promql                = "(kube_resourcequota_sysdig_limits_memory_hard -kube_resourcequota_sysdig_limits_memory_used{namespace=\"eb75ad-prod\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 16000000000"
   trigger_after_minutes = 2
 
   notification_channels = [132277, 57336]
@@ -598,7 +598,7 @@ resource "sysdig_monitor_alert_promql" "dev_gold_memory_limit" {
   severity    = 2
   enabled     = true
 
-  promql                = "(kube_resourcequota_sysdig_limits_memory_hard -kube_resourcequota_sysdig_limits_memory_used{namespace=\"eb75ad-dev\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) > 16000000000"
+  promql                = "(kube_resourcequota_sysdig_limits_memory_hard -kube_resourcequota_sysdig_limits_memory_used{namespace=\"eb75ad-dev\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 16000000000"
   trigger_after_minutes = 2
 
   notification_channels = [132277, 57336]
@@ -615,7 +615,7 @@ resource "sysdig_monitor_alert_promql" "test_gold_memory_limit" {
   severity    = 2
   enabled     = true
 
-  promql                = "(kube_resourcequota_sysdig_limits_memory_hard -kube_resourcequota_sysdig_limits_memory_used{namespace=\"eb75ad-test\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) > 16000000000"
+  promql                = "(kube_resourcequota_sysdig_limits_memory_hard -kube_resourcequota_sysdig_limits_memory_used{namespace=\"eb75ad-test\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 16000000000"
   trigger_after_minutes = 2
 
   notification_channels = [132277, 57336]
