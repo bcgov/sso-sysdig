@@ -217,11 +217,11 @@ resource "sysdig_monitor_alert_metric" "prod_db_pods_low" {
 }
 
 resource "sysdig_monitor_alert_promql" "prod_backup_storage_pv_usage_gt_med" {
-  name        = "[GOLD CUST PROD] DB Backup - storage 80%"
-  description = "This uses the filesystem as a proxy for PVC space."
+  name        = "[GOLD CUST PROD] DB Backup - storage 85%"
+  description = "This Backup PVC is filling up."
   severity    = 4
   enabled     = true
-  promql      = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"sso-backup-storage-backup-pvc\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"sso-backup-storage-backup-pvc\"}) by (persistentvolumeclaim) > 80"
+  promql      = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"sso-backup-storage-backup-pvc\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"sso-backup-storage-backup-pvc\"}) by (persistentvolumeclaim) > 85"
 
   trigger_after_minutes = 2
 
@@ -233,7 +233,7 @@ resource "sysdig_monitor_alert_promql" "prod_backup_storage_pv_usage_gt_med" {
 
 resource "sysdig_monitor_alert_promql" "dev_backup_storage_pv_usage_gt_med" {
   name        = "[GOLD CUST DEV] DB Backup - storage 85%"
-  description = "This uses the filesystem as a proxy for PVC space."
+  description = "This Backup PVC is filling up."
   severity    = 4
   enabled     = true
 
@@ -248,7 +248,7 @@ resource "sysdig_monitor_alert_promql" "dev_backup_storage_pv_usage_gt_med" {
 
 resource "sysdig_monitor_alert_promql" "test_backup_storage_pv_usage_gt_med" {
   name        = "[GOLD CUST TEST] DB Backup - storage 85%"
-  description = "This uses the filesystem as a proxy for PVC space."
+  description = "This Backup PVC is filling up."
   severity    = 4
   enabled     = true
 
