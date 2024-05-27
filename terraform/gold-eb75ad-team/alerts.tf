@@ -633,7 +633,7 @@ resource "sysdig_monitor_alert_v2_change" "dev_pvcuse_spike" {
   time_aggregation  = "avg"
   operator          = ">"
   threshold         = 3
-  group_by          = [""]
+  group_by          = ["kube_pod_name"]
 
   scope {
     label    = "kube_cluster_name"
