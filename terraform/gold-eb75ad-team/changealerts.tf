@@ -32,7 +32,7 @@ resource "sysdig_monitor_alert_v2_change" "dev_pvcuse_spike" {
     renotify_every_minutes = 60
   }
 
-  shorter_time_range_seconds = 599
-  longer_time_range_seconds  = 28799
+  shorter_time_range_seconds = 600
+  longer_time_range_seconds  = 86400
 
 }
