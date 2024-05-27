@@ -33,6 +33,6 @@ resource "sysdig_monitor_alert_v2_change" "dev_pvcuse_spike" {
   }
 
   shorter_time_range_seconds = 600
-  longer_time_range_seconds  = 86400
+  longer_time_range_seconds  = 28800
 
 }
