@@ -35,7 +35,7 @@ In order to run the Terraform scripts locally, it requires:
 
 - `AWS Credentials`
 
-  1. Log into [`Cloud Pathfinder AWS LZ2 Portal`](https://oidc.gov.bc.ca/auth/realms/umafubc9/protocol/saml/clients/amazon-aws).
+  1. Log into [`BC Gov AWS Login`](https://login.nimbus.cloud.gov.bc.ca/api).
   1. Choose `xgr00q-prod` and `Click for Credentials`.
   1. Copy the AWS credentials and pastes into the local workspace.
 
