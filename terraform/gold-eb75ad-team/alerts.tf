@@ -627,7 +627,7 @@ resource "sysdig_monitor_alert_promql" "test_gold_memory_limit" {
 resource "sysdig_monitor_alert_v2_change" "dev_pvcuse_spike" {
 
   name              = "[DEV] the dev PVC usage surged(EXPERIMENT)"
-  severity          = "low"
+  severity          = "info"
   metric            = "kubelet_volume_stats_used_bytes"
   group_aggregation = "avg"
   time_aggregation  = "avg"
@@ -654,8 +654,80 @@ resource "sysdig_monitor_alert_v2_change" "dev_pvcuse_spike" {
   }
 
   notification_channels {
-    id                     = 132277
-    renotify_every_minutes = 60
+    id = 132277
+  }
+
+  shorter_time_range_seconds = 600
+  longer_time_range_seconds  = 28800
+
+}
+
+
+resource "sysdig_monitor_alert_v2_change" "test_pvcuse_spike" {
+
+  name              = "[TEST] the dev PVC usage surged(EXPERIMENT)"
+  severity          = "info"
+  metric            = "kubelet_volume_stats_used_bytes"
+  group_aggregation = "avg"
+  time_aggregation  = "avg"
+  operator          = ">"
+  threshold         = 10
+  group_by          = ["kube_pod_name"]
+
+  scope {
+    label    = "kube_cluster_name"
+    operator = "equals"
+    values   = ["gold"]
+  }
+
+  scope {
+    label    = "kube_namespace_name"
+    operator = "equals"
+    values   = ["eb75ad-test"]
+  }
+
+  scope {
+    label    = "persistentvolumeclaim"
+    operator = "in"
+    values   = ["storage-volume-sso-patroni-0", "storage-volume-sso-patroni-1", "storage-volume-sso-patroni-2"]
+  }
+
+  notification_channels {
+    id = 132277
+  }
+
+  shorter_time_range_seconds = 600
+  longer_time_range_seconds  = 28800
+
+}
+
+resource "sysdig_monitor_alert_v2_change" "prod_pvcuse_spike" {
+
+  name              = "[PROD] the dev PVC usage surged(EXPERIMENT)"
+  severity          = "info"
+  metric            = "kubelet_volume_stats_used_bytes"
+  group_aggregation = "avg"
+  time_aggregation  = "avg"
+  operator          = ">"
+  threshold         = 3
+  group_by          = ["kube_pod_name"]
+  scope {
+    label    = "kube_cluster_name"
+    operator = "equals"
+    values   = ["gold"]
+  }
+  scope {
+    label    = "kube_namespace_name"
+    operator = "equals"
+    values   = ["eb75ad-prod"]
+  }
+  scope {
+    label    = "persistentvolumeclaim"
+    operator = "in"
+    values   = ["storage-volume-sso-patroni-0", "storage-volume-sso-patroni-1", "storage-volume-sso-patroni-2"]
+  }
+  notification_channels {
+    id = 132277
   }
 
   shorter_time_range_seconds = 600
