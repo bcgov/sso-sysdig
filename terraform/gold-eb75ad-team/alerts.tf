@@ -627,7 +627,7 @@ resource "sysdig_monitor_alert_promql" "test_gold_memory_limit" {
 resource "sysdig_monitor_alert_v2_change" "dev_pvcuse_spike" {
 
   name              = "[DEV] the dev PVC usage surged(EXPERIMENT)"
-  severity          = "low"
+  severity          = "info"
   metric            = "kubelet_volume_stats_used_bytes"
   group_aggregation = "avg"
   time_aggregation  = "avg"
@@ -666,7 +666,7 @@ resource "sysdig_monitor_alert_v2_change" "dev_pvcuse_spike" {
 resource "sysdig_monitor_alert_v2_change" "test_pvcuse_spike" {
 
   name              = "[TEST] the dev PVC usage surged(EXPERIMENT)"
-  severity          = "low"
+  severity          = "info"
   metric            = "kubelet_volume_stats_used_bytes"
   group_aggregation = "avg"
   time_aggregation  = "avg"
@@ -704,7 +704,7 @@ resource "sysdig_monitor_alert_v2_change" "test_pvcuse_spike" {
 resource "sysdig_monitor_alert_v2_change" "prod_pvcuse_spike" {
 
   name              = "[PROD] the dev PVC usage surged(EXPERIMENT)"
-  severity          = "low"
+  severity          = "info"
   metric            = "kubelet_volume_stats_used_bytes"
   group_aggregation = "avg"
   time_aggregation  = "avg"
