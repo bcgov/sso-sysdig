@@ -654,8 +654,7 @@ resource "sysdig_monitor_alert_v2_change" "dev_pvcuse_spike" {
   }
 
   notification_channels {
-    id                     = 132277
-    renotify_every_minutes = 60
+    id = 132277
   }
 
   shorter_time_range_seconds = 600
@@ -672,7 +671,7 @@ resource "sysdig_monitor_alert_v2_change" "test_pvcuse_spike" {
   group_aggregation = "avg"
   time_aggregation  = "avg"
   operator          = ">"
-  threshold         = 3
+  threshold         = 10
   group_by          = ["kube_pod_name"]
 
   scope {
@@ -694,8 +693,7 @@ resource "sysdig_monitor_alert_v2_change" "test_pvcuse_spike" {
   }
 
   notification_channels {
-    id                     = 132277
-    renotify_every_minutes = 60
+    id = 132277
   }
 
   shorter_time_range_seconds = 600
@@ -729,8 +727,7 @@ resource "sysdig_monitor_alert_v2_change" "prod_pvcuse_spike" {
     values   = ["storage-volume-sso-patroni-0", "storage-volume-sso-patroni-1", "storage-volume-sso-patroni-2"]
   }
   notification_channels {
-    id                     = 132277
-    renotify_every_minutes = 60
+    id = 132277
   }
 
   shorter_time_range_seconds = 600
