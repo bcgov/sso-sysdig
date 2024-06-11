@@ -734,3 +734,48 @@ resource "sysdig_monitor_alert_v2_change" "prod_pvcuse_spike" {
   longer_time_range_seconds  = 28800
 
 }
+
+resource "sysdig_monitor_alert_promql" "dev_http_request_latency" {
+  name        = "[GOLD DEV] Higher than normal response time detected"
+  description = "The dev keycloak latency is elevated"
+  severity    = 4
+  enabled     = true
+
+  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-dev\",kube_deployment_name=~\"sso-keycloak\"}[59s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 40000000"
+  trigger_after_minutes = 5
+
+  notification_channels = [132277]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
+resource "sysdig_monitor_alert_promql" "prod_http_request_latency" {
+  name        = "[GOLD PROD] Higher than normal response time detected"
+  description = "The prod keycloak latency is elevated"
+  severity    = 4
+  enabled     = true
+
+  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-prod\",kube_deployment_name=~\"sso-keycloak\"}[59s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 40000000"
+  trigger_after_minutes = 5
+
+  notification_channels = [132277]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
+resource "sysdig_monitor_alert_promql" "test_http_request_latency" {
+  name        = "[GOLD TEST] Higher than normal response time detected"
+  description = "The test keycloak latency is elevated"
+  severity    = 4
+  enabled     = true
+
+  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-test\",kube_deployment_name=~\"sso-keycloak\"}[59s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 40000000"
+  trigger_after_minutes = 5
+
+  notification_channels = [132277]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
