@@ -1,7 +1,5 @@
 licensePlate: eb75ad
 users:
-  - name: zorin.samji@gov.bc.ca
-    role: ROLE_TEAM_MANAGER
   - name: arcshiftsolutions@gmail.com
     role: ROLE_TEAM_MANAGER
   - name: jonathan.sharman@gov.bc.ca
