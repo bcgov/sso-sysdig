@@ -746,7 +746,7 @@ resource "sysdig_monitor_alert_promql" "dev_http_request_latency" {
   name        = "[GOLD DEV] Higher than normal response time detected"
   description = "The dev keycloak latency is elevated"
   severity    = 4
-  enabled     = true
+  enabled     = false
 
   promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-dev\",kube_deployment_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 15000000"
   trigger_after_minutes = 5
@@ -761,7 +761,7 @@ resource "sysdig_monitor_alert_promql" "prod_http_request_latency" {
   name        = "[GOLD PROD] Higher than normal response time detected"
   description = "The prod keycloak latency is elevated"
   severity    = 4
-  enabled     = true
+  enabled     = false
 
   promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-prod\",kube_deployment_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 15000000"
   trigger_after_minutes = 5
@@ -776,7 +776,7 @@ resource "sysdig_monitor_alert_promql" "test_http_request_latency" {
   name        = "[GOLD TEST] Higher than normal response time detected"
   description = "The test keycloak latency is elevated"
   severity    = 4
-  enabled     = true
+  enabled     = false
 
   promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-test\",kube_deployment_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 15000000"
   trigger_after_minutes = 5
