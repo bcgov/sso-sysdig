@@ -748,8 +748,8 @@ resource "sysdig_monitor_alert_promql" "dev_http_request_latency" {
   severity    = 4
   enabled     = false
 
-  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-dev\",kube_deployment_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 15000000"
-  trigger_after_minutes = 5
+  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-dev\",kube_deployment_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 300000000"
+  trigger_after_minutes = 15
 
   notification_channels = [132277]
   custom_notification {
@@ -763,8 +763,8 @@ resource "sysdig_monitor_alert_promql" "prod_http_request_latency" {
   severity    = 4
   enabled     = false
 
-  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-prod\",kube_deployment_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 15000000"
-  trigger_after_minutes = 5
+  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-prod\",kube_deployment_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 300000000"
+  trigger_after_minutes = 15
 
   notification_channels = [132277]
   custom_notification {
@@ -778,8 +778,8 @@ resource "sysdig_monitor_alert_promql" "test_http_request_latency" {
   severity    = 4
   enabled     = false
 
-  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-test\",kube_deployment_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 15000000"
-  trigger_after_minutes = 5
+  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-test\",kube_deployment_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 300000000"
+  trigger_after_minutes = 15
 
   notification_channels = [132277]
   custom_notification {
