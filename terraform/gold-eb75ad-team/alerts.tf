@@ -633,13 +633,14 @@ resource "sysdig_monitor_alert_promql" "test_gold_memory_limit" {
 
 resource "sysdig_monitor_alert_v2_change" "prod_pvcuse_spike" {
 
-  name              = "[PROD] the dev PVC usage surged(EXPERIMENT)"
+  name              = "[PROD] the prod PVC usage surged"
+  description       = "There are ocasional surges the the PVC usage.  This alert detects very large ones."
   severity          = "low"
   metric            = "kubelet_volume_stats_used_bytes"
   group_aggregation = "avg"
   time_aggregation  = "avg"
   operator          = ">"
-  threshold         = 3
+  threshold         = 6
   group_by          = ["kube_pod_name"]
   scope {
     label    = "kube_cluster_name"
