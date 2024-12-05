@@ -637,6 +637,7 @@ resource "sysdig_monitor_alert_v2_change" "prod_pvcuse_spike" {
   description       = "There are ocasional surges the the PVC usage.  This alert detects very large ones."
   severity          = "low"
   metric            = "kubelet_volume_stats_used_bytes"
+  enabled           = false
   group_aggregation = "avg"
   time_aggregation  = "avg"
   operator          = ">"
