@@ -168,7 +168,7 @@ resource "sysdig_monitor_alert_metric" "prod_db_pod_restarts_gte_1" {
   severity    = 4
   enabled     = true
 
-  metric                = "sum(avg(kube_pod_sysdig_restart_count)) >= 1"
+  metric                = "sum(avg(kube_pod_sysdig_restart_count)) >= 2"
   trigger_after_minutes = 2
 
   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.statefulset.name in (\"sso-patroni\")"
