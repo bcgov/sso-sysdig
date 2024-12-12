@@ -162,24 +162,6 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_log_pv_med" {
   }
 }
 
-resource "sysdig_monitor_alert_metric" "prod_db_pod_restarts_gte_1" {
-  name        = "[GOLD CUST PROD] DB - Pod Restarts"
-  description = ""
-  severity    = 4
-  enabled     = true
-
-  metric                = "sum(avg(kube_pod_sysdig_restart_count)) >= 1"
-  trigger_after_minutes = 2
-
-  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.statefulset.name in (\"sso-patroni\")"
-  multiple_alerts_by = []
-
-  notification_channels = [132277, 57336, 57341]
-  custom_notification {
-    title = "{{__alert_name__}} is {{__alert_status__}}"
-  }
-}
-
 resource "sysdig_monitor_alert_metric" "prod_db_pods_high" {
   name        = "[GOLD CUST PROD] DB - Ready Pods High"
   description = ""
