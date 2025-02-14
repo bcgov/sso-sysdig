@@ -192,8 +192,8 @@ resource "sysdig_monitor_dashboard" "pv_usage" {
 }
 
 resource "sysdig_monitor_dashboard" "pods_cpu" {
-  name        = "Managed by terraform: Pods & CPU"
-  description = "Managed by terraform: Pods & CPU"
+  name        = "Managed by terraform: CPU Load Memory and HTTP requests"
+  description = "This will give us the basic metrics for the keycloak pods for load testing results"
 
   share {
     role = "ROLE_RESOURCE_EDIT"
@@ -217,35 +217,6 @@ resource "sysdig_monitor_dashboard" "pods_cpu" {
     variable   = "namespace_name"
   }
 
-  panel {
-    pos_x       = 0
-    pos_y       = 0
-    width       = 8
-    height      = 4
-    type        = "number"
-    name        = "Ready Pod"
-    description = "Patroni pods are replicas of our database. We are setup to have 3 at any given time. An alert will be triggered if this fails below 3"
-
-    query {
-      promql = "sum(kube_pod_sysdig_status_ready{$__scope, kube_pod_label_release='sso-keycloak'})"
-      unit   = "number"
-    }
-  }
-
-  panel {
-    pos_x       = 8
-    pos_y       = 0
-    width       = 8
-    height      = 4
-    type        = "number"
-    name        = "Ready DB Pods"
-    description = "Description"
-
-    query {
-      promql = "sum(kube_pod_sysdig_status_ready{$__scope, kube_pod_label_release='sso-patroni'})"
-      unit   = "number"
-    }
-  }
 
   panel {
     pos_x       = 0
@@ -253,11 +224,15 @@ resource "sysdig_monitor_dashboard" "pods_cpu" {
     width       = 24
     height      = 10
     type        = "timechart"
-    name        = "SSO Pods Usage"
+    name        = "SSO CPU Usage"
     description = "Description"
 
     query {
-      promql = "avg(sum(sysdig_container_cpu_cores_used{$__scope, kube_pod_label_release='sso-keycloak'}))"
+      promql = "sysdig_container_cpu_cores_used{kube_namespace_name=~\"c6af30-prod\",kube_cluster_name=~\"gold\",kube_pod_name=~\".*sso-keycloak.*\", kube_deployment_name='sso-keycloak'}"
+      unit   = "number"
+    }
+    query {
+      promql = "sum by (kube_deployment_name) (rate(sysdig_container_cpu_cores_used{kube_namespace_name=~\"c6af30-prod\",kube_cluster_name=~\"gold\",kube_pod_name=~\".*sso-keycloak.*\",kube_deployment_name=\"sso-keycloak\"}[1m]))"
       unit   = "number"
     }
   }
