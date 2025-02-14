@@ -229,7 +229,7 @@ resource "sysdig_monitor_dashboard" "pods_cpu" {
     legend {
       enabled      = true
       layout       = "table"
-      position     = "top"
+      position     = "right"
       show_current = true
     }
     query {
