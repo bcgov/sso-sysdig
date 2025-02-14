@@ -226,7 +226,12 @@ resource "sysdig_monitor_dashboard" "pods_cpu" {
     type        = "timechart"
     name        = "SSO CPU Usage"
     description = "Description"
-
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "top"
+      show_current = true
+    }
     query {
       promql = "sysdig_container_cpu_cores_used{kube_namespace_name=~\"c6af30-prod\",kube_cluster_name=~\"gold\",kube_pod_name=~\".*sso-keycloak.*\", kube_deployment_name='sso-keycloak'}"
       unit   = "number"
