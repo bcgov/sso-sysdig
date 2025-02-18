@@ -161,7 +161,7 @@ resource "sysdig_monitor_dashboard" "pv_usage" {
   scope {
     metric     = "kube_namespace_name"
     comparator = "in"
-    value      = ["c6af30-prod"]
+    value      = ["c6af30-dev"]
     variable   = "namespace_name"
   }
 
@@ -213,7 +213,7 @@ resource "sysdig_monitor_dashboard" "pods_cpu" {
   scope {
     metric     = "kube_namespace_name"
     comparator = "in"
-    value      = ["c6af30-prod"]
+    value      = ["c6af30-dev"]
     variable   = "namespace_name"
   }
 
@@ -233,11 +233,11 @@ resource "sysdig_monitor_dashboard" "pods_cpu" {
       show_current = true
     }
     query {
-      promql = "sysdig_container_cpu_cores_used{kube_namespace_name=~\"c6af30-prod\",kube_cluster_name=~\"gold\",kube_pod_name=~\".*sso-keycloak.*\", kube_deployment_name='sso-keycloak'}"
+      promql = "sysdig_container_cpu_cores_used{kube_namespace_name=~\"c6af30-dev\",kube_cluster_name=~\"gold\",kube_pod_name=~\".*sso-keycloak.*\", kube_deployment_name='sso-keycloak'}"
       unit   = "number"
     }
     query {
-      promql = "sum by (kube_deployment_name) (rate(sysdig_container_cpu_cores_used{kube_namespace_name=~\"c6af30-prod\",kube_cluster_name=~\"gold\",kube_pod_name=~\".*sso-keycloak.*\",kube_deployment_name=\"sso-keycloak\"}[1m]))"
+      promql = "sum by (kube_deployment_name) (rate(sysdig_container_cpu_cores_used{kube_namespace_name=~\"c6af30-dev\",kube_cluster_name=~\"gold\",kube_pod_name=~\".*sso-keycloak.*\",kube_deployment_name=\"sso-keycloak\"}[1m]))"
       unit   = "number"
     }
   }
@@ -256,11 +256,11 @@ resource "sysdig_monitor_dashboard" "pods_cpu" {
       show_current = true
     }
     query {
-      promql = "sysdig_container_memory_used_bytes{kube_namespace_name=~\"c6af30-prod\",kube_cluster_name=~\"gold\",kube_pod_name=~\".*sso-keycloak.*\", kube_deployment_name='sso-keycloak'}"
+      promql = "sysdig_container_memory_used_bytes{kube_namespace_name=~\"c6af30-dev\",kube_cluster_name=~\"gold\",kube_pod_name=~\".*sso-keycloak.*\", kube_deployment_name='sso-keycloak'}"
       unit   = "number"
     }
     query {
-      promql = "sum by (kube_deployment_name) (rate(sysdig_container_memory_used_bytes{kube_namespace_name=~\"c6af30-prod\",kube_cluster_name=~\"gold\",kube_pod_name=~\".*sso-keycloak.*\",kube_deployment_name=\"sso-keycloak\"}[1m]))"
+      promql = "sum by (kube_deployment_name) (rate(sysdig_container_memory_used_bytes{kube_namespace_name=~\"c6af30-dev\",kube_cluster_name=~\"gold\",kube_pod_name=~\".*sso-keycloak.*\",kube_deployment_name=\"sso-keycloak\"}[1m]))"
       unit   = "number"
     }
   }
