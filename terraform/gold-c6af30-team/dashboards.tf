@@ -241,4 +241,27 @@ resource "sysdig_monitor_dashboard" "pods_cpu" {
       unit   = "number"
     }
   }
+  panel {
+    pos_x       = 0
+    pos_y       = 16
+    width       = 24
+    height      = 10
+    type        = "timechart"
+    name        = "SSO Memory Usage"
+    description = "Description"
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "right"
+      show_current = true
+    }
+    query {
+      promql = "sysdig_container_memory_used_bytes{kube_namespace_name=~\"c6af30-prod\",kube_cluster_name=~\"gold\",kube_pod_name=~\".*sso-keycloak.*\", kube_deployment_name='sso-keycloak'}"
+      unit   = "number"
+    }
+    query {
+      promql = "sum by (kube_deployment_name) (rate(sysdig_container_memory_used_bytes{kube_namespace_name=~\"c6af30-prod\",kube_cluster_name=~\"gold\",kube_pod_name=~\".*sso-keycloak.*\",kube_deployment_name=\"sso-keycloak\"}[1m]))"
+      unit   = "number"
+    }
+  }
 }
