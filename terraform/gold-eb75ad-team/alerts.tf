@@ -8,7 +8,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_spike_high" {
   metric                = "avg(max(sysdig_container_cpu_cores_used)) > 5"
   trigger_after_minutes = 2
 
-  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.statefulset.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
   notification_channels = [132277, 57336, 57341]
@@ -26,7 +26,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_high" {
   metric                = "sum(avg(sysdig_container_cpu_cores_used)) > 5"
   trigger_after_minutes = 2
 
-  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.statefulset.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
   notification_channels = [132277, 57336, 57341]
@@ -44,7 +44,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_med" {
   metric                = "sum(avg(sysdig_container_cpu_cores_used)) >= 3"
   trigger_after_minutes = 2
 
-  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.statefulset.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
   notification_channels = [132277, 57336, 57341]
@@ -63,7 +63,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_sustained" {
   metric                = "max(avg(sysdig_container_cpu_cores_used)) >= 0.50"
   trigger_after_minutes = 30
 
-  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.statefulset.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
   notification_channels = [132277, 57336, 57341]
@@ -81,7 +81,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_high" {
   metric                = "sum(min(kube_pod_sysdig_status_ready)) < 2"
   trigger_after_minutes = 2
 
-  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.statefulset.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
   notification_channels = [132277, 57336, 57341]
@@ -99,7 +99,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_high" {
 #   metric                = "sum(min(kube_pod_sysdig_status_ready)) < 6"
 #   trigger_after_minutes = 2
 
-#   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
+#   scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.statefulset.name in (\"sso-keycloak\")"
 #   multiple_alerts_by = []
 
 #   notification_channels = [132277, 57336, 57341]
@@ -117,7 +117,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_low" {
   metric                = "sum(max(kube_pod_sysdig_status_ready)) < 3"
   trigger_after_minutes = 2
 
-  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.statefulset.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
   notification_channels = [132277, 57336, 57341]
@@ -135,7 +135,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_log_pv_high" {
   metric                = "max(avg(sysdig_container_fs_used_percent)) > 90"
   trigger_after_minutes = 2
 
-  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.statefulset.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
   notification_channels = [132277, 57336, 57341]
@@ -153,7 +153,7 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_log_pv_med" {
   metric                = "max(avg(sysdig_container_fs_used_percent)) > 70"
   trigger_after_minutes = 2
 
-  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.deployment.name in (\"sso-keycloak\")"
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.statefulset.name in (\"sso-keycloak\")"
   multiple_alerts_by = []
 
   notification_channels = [132277, 57336, 57341]
