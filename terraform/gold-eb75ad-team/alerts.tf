@@ -504,114 +504,115 @@ resource "sysdig_monitor_alert_promql" "prod_kc_disk_log_pv_usage_sixty" {
   }
 }
 
-# The Keycloak deployment has a max surge of 3, and the keycloak pods
-# require 2 cores.  Setting limit at (3*2+1) cores
-## Max surge as of Aug 2024 1, Pod count 3, CPU limit 4  (1*4+1) = 5
-resource "sysdig_monitor_alert_promql" "prod_gold_cpu_limit" {
-  name        = "[GOLD PROD] CPU limit of pods nearing namespace limit"
-  description = "There is no longer CPU room to accomodate the keycloak max surge of 1 pod"
-  severity    = 2
-  enabled     = true
+# NO LONGER WORKING IN SYSDIG
+# # The Keycloak deployment has a max surge of 3, and the keycloak pods
+# # require 2 cores.  Setting limit at (3*2+1) cores
+# ## Max surge as of Aug 2024 1, Pod count 3, CPU limit 4  (1*4+1) = 5
+# resource "sysdig_monitor_alert_promql" "prod_gold_cpu_limit" {
+#   name        = "[GOLD PROD] CPU limit of pods nearing namespace limit"
+#   description = "There is no longer CPU room to accomodate the keycloak max surge of 1 pod"
+#   severity    = 2
+#   enabled     = true
 
-  promql                = "(kube_resourcequota_sysdig_limits_cpu_hard -kube_resourcequota_sysdig_limits_cpu_used{namespace=\"eb75ad-prod\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 5"
-  trigger_after_minutes = 2
+#   promql                = "(kube_resourcequota_sysdig_limits_cpu_hard -kube_resourcequota_sysdig_limits_cpu_used{namespace=\"eb75ad-prod\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 5"
+#   trigger_after_minutes = 2
 
-  notification_channels = [132277, 57336]
-  custom_notification {
-    title = "{{__alert_name__}} is {{__alert_status__}}"
-  }
-}
+#   notification_channels = [132277, 57336]
+#   custom_notification {
+#     title = "{{__alert_name__}} is {{__alert_status__}}"
+#   }
+# }
 
-# The Keycloak deployment has a max surge of 3, and the keycloak pods
-# require 2 cores.  Setting limit at (3*2+1) cores
-## Max surge as of Aug 2024 1, Pod count 3, CPU limit 4  (1*4+1) = 5
-resource "sysdig_monitor_alert_promql" "test_gold_cpu_limit" {
-  name        = "[GOLD TEST] CPU limit of pods nearing namespace limit"
-  description = "There is no longer CPU room to accomodate the keycloak max surge of 1 pod"
-  severity    = 4
-  enabled     = true
+# # The Keycloak deployment has a max surge of 3, and the keycloak pods
+# # require 2 cores.  Setting limit at (3*2+1) cores
+# ## Max surge as of Aug 2024 1, Pod count 3, CPU limit 4  (1*4+1) = 5
+# resource "sysdig_monitor_alert_promql" "test_gold_cpu_limit" {
+#   name        = "[GOLD TEST] CPU limit of pods nearing namespace limit"
+#   description = "There is no longer CPU room to accomodate the keycloak max surge of 1 pod"
+#   severity    = 4
+#   enabled     = true
 
-  promql                = "(kube_resourcequota_sysdig_limits_cpu_hard -kube_resourcequota_sysdig_limits_cpu_used{namespace=\"eb75ad-test\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 5"
-  trigger_after_minutes = 2
+#   promql                = "(kube_resourcequota_sysdig_limits_cpu_hard -kube_resourcequota_sysdig_limits_cpu_used{namespace=\"eb75ad-test\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 5"
+#   trigger_after_minutes = 2
 
-  notification_channels = [132277, 57336]
-  custom_notification {
-    title = "{{__alert_name__}} is {{__alert_status__}}"
-  }
-}
+#   notification_channels = [132277, 57336]
+#   custom_notification {
+#     title = "{{__alert_name__}} is {{__alert_status__}}"
+#   }
+# }
 
-# The Keycloak deployment has a max surge of 3, and the keycloak pods
-# require 2 cores.  Setting limit at (3*2+1) cores
-## Max surge as of Aug 2024 1, Pod count 3, CPU limit 4  (1*4+1) = 5
-resource "sysdig_monitor_alert_promql" "dev_gold_cpu_limit" {
-  name        = "[GOLD DEV] CPU limit of pods nearing namespace limit"
-  description = "There is no longer CPU room to accomodate the keycloak max surge of 1 pod"
-  severity    = 4
-  enabled     = true
+# # The Keycloak deployment has a max surge of 3, and the keycloak pods
+# # require 2 cores.  Setting limit at (3*2+1) cores
+# ## Max surge as of Aug 2024 1, Pod count 3, CPU limit 4  (1*4+1) = 5
+# resource "sysdig_monitor_alert_promql" "dev_gold_cpu_limit" {
+#   name        = "[GOLD DEV] CPU limit of pods nearing namespace limit"
+#   description = "There is no longer CPU room to accomodate the keycloak max surge of 1 pod"
+#   severity    = 4
+#   enabled     = true
 
-  promql                = "(kube_resourcequota_sysdig_limits_cpu_hard -kube_resourcequota_sysdig_limits_cpu_used{namespace=\"eb75ad-dev\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 5"
-  trigger_after_minutes = 2
+#   promql                = "(kube_resourcequota_sysdig_limits_cpu_hard -kube_resourcequota_sysdig_limits_cpu_used{namespace=\"eb75ad-dev\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 5"
+#   trigger_after_minutes = 2
 
-  notification_channels = [132277, 57336]
-  custom_notification {
-    title = "{{__alert_name__}} is {{__alert_status__}}"
-  }
-}
+#   notification_channels = [132277, 57336]
+#   custom_notification {
+#     title = "{{__alert_name__}} is {{__alert_status__}}"
+#   }
+# }
 
-# The Keycloak deployment has a max surge of 3, and the keycloak pods
-# require 4Gi of memory.  Setting limit at (3*4+4)Gi
-## Max surge as of Aug 2024 1, Setting limit at (1*4+4)Gi
-resource "sysdig_monitor_alert_promql" "prod_gold_memory_limit" {
-  name        = "[GOLD PROD] Memory limit of pods nearing namespace limit"
-  description = "There is almost no Memory room to accomodate the keycloak max surge of 1 pod"
-  severity    = 2
-  enabled     = true
+# # The Keycloak deployment has a max surge of 3, and the keycloak pods
+# # require 4Gi of memory.  Setting limit at (3*4+4)Gi
+# ## Max surge as of Aug 2024 1, Setting limit at (1*4+4)Gi
+# resource "sysdig_monitor_alert_promql" "prod_gold_memory_limit" {
+#   name        = "[GOLD PROD] Memory limit of pods nearing namespace limit"
+#   description = "There is almost no Memory room to accomodate the keycloak max surge of 1 pod"
+#   severity    = 2
+#   enabled     = true
 
-  promql                = "(kube_resourcequota_sysdig_limits_memory_hard -kube_resourcequota_sysdig_limits_memory_used{namespace=\"eb75ad-prod\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 8000000000"
-  trigger_after_minutes = 2
+#   promql                = "(kube_resourcequota_sysdig_limits_memory_hard -kube_resourcequota_sysdig_limits_memory_used{namespace=\"eb75ad-prod\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 8000000000"
+#   trigger_after_minutes = 2
 
-  notification_channels = [132277, 57336]
-  custom_notification {
-    title = "{{__alert_name__}} is {{__alert_status__}}"
-  }
-}
+#   notification_channels = [132277, 57336]
+#   custom_notification {
+#     title = "{{__alert_name__}} is {{__alert_status__}}"
+#   }
+# }
 
-# The Keycloak deployment has a max surge of 3, and the keycloak pods
-# require 4Gi of memory.  Setting limit at (3*4+4)Gi
-## Max surge as of Aug 2024 1, Setting limit at (1*4+4)Gi
-resource "sysdig_monitor_alert_promql" "dev_gold_memory_limit" {
-  name        = "[GOLD DEV] Memory limit of pods nearing namespace limit"
-  description = "There is almost no Memory room to accomodate the keycloak max surge of 1 pod"
-  severity    = 2
-  enabled     = true
+# # The Keycloak deployment has a max surge of 3, and the keycloak pods
+# # require 4Gi of memory.  Setting limit at (3*4+4)Gi
+# ## Max surge as of Aug 2024 1, Setting limit at (1*4+4)Gi
+# resource "sysdig_monitor_alert_promql" "dev_gold_memory_limit" {
+#   name        = "[GOLD DEV] Memory limit of pods nearing namespace limit"
+#   description = "There is almost no Memory room to accomodate the keycloak max surge of 1 pod"
+#   severity    = 2
+#   enabled     = true
 
-  promql                = "(kube_resourcequota_sysdig_limits_memory_hard -kube_resourcequota_sysdig_limits_memory_used{namespace=\"eb75ad-dev\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 8000000000"
-  trigger_after_minutes = 2
+#   promql                = "(kube_resourcequota_sysdig_limits_memory_hard -kube_resourcequota_sysdig_limits_memory_used{namespace=\"eb75ad-dev\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 8000000000"
+#   trigger_after_minutes = 2
 
-  notification_channels = [132277, 57336]
-  custom_notification {
-    title = "{{__alert_name__}} is {{__alert_status__}}"
-  }
-}
+#   notification_channels = [132277, 57336]
+#   custom_notification {
+#     title = "{{__alert_name__}} is {{__alert_status__}}"
+#   }
+# }
 
-# The Keycloak deployment has a max surge of 3, and the keycloak pods
-# require 4Gi of memory.  Setting limit at (3*4+4)Gi
-## Max surge as of Aug 2024 1, Setting limit at (1*4+4)Gi
+# # The Keycloak deployment has a max surge of 3, and the keycloak pods
+# # require 4Gi of memory.  Setting limit at (3*4+4)Gi
+# ## Max surge as of Aug 2024 1, Setting limit at (1*4+4)Gi
 
-resource "sysdig_monitor_alert_promql" "test_gold_memory_limit" {
-  name        = "[GOLD TEST] Memory limit of pods nearing namespace limit"
-  description = "There is almost no Memory room to accomodate the keycloak max surge of 1 pod"
-  severity    = 2
-  enabled     = true
+# resource "sysdig_monitor_alert_promql" "test_gold_memory_limit" {
+#   name        = "[GOLD TEST] Memory limit of pods nearing namespace limit"
+#   description = "There is almost no Memory room to accomodate the keycloak max surge of 1 pod"
+#   severity    = 2
+#   enabled     = true
 
-  promql                = "(kube_resourcequota_sysdig_limits_memory_hard -kube_resourcequota_sysdig_limits_memory_used{namespace=\"eb75ad-test\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 8000000000"
-  trigger_after_minutes = 2
+#   promql                = "(kube_resourcequota_sysdig_limits_memory_hard -kube_resourcequota_sysdig_limits_memory_used{namespace=\"eb75ad-test\",kube_cluster_name=\"gold\",kube_resourcequota_label_scope_notterminating='true'}) < 8000000000"
+#   trigger_after_minutes = 2
 
-  notification_channels = [132277, 57336]
-  custom_notification {
-    title = "{{__alert_name__}} is {{__alert_status__}}"
-  }
-}
+#   notification_channels = [132277, 57336]
+#   custom_notification {
+#     title = "{{__alert_name__}} is {{__alert_status__}}"
+#   }
+# }
 
 resource "sysdig_monitor_alert_v2_change" "prod_pvcuse_spike" {
 
@@ -655,7 +656,7 @@ resource "sysdig_monitor_alert_promql" "dev_http_request_latency" {
   severity    = 4
   enabled     = true
 
-  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-dev\",kube_deployment_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 200000000"
+  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-dev\",kube_statefulset_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 200000000"
   trigger_after_minutes = 15
 
   notification_channels = [132277]
@@ -670,7 +671,7 @@ resource "sysdig_monitor_alert_promql" "prod_http_request_latency" {
   severity    = 4
   enabled     = true
 
-  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-prod\",kube_deployment_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 300000000"
+  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-prod\",kube_statefulset_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 300000000"
   trigger_after_minutes = 15
 
   notification_channels = [132277]
@@ -685,7 +686,7 @@ resource "sysdig_monitor_alert_promql" "test_http_request_latency" {
   severity    = 4
   enabled     = true
 
-  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-test\",kube_deployment_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 200000000"
+  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-test\",kube_statefulset_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 200000000"
   trigger_after_minutes = 15
 
   notification_channels = [132277]
