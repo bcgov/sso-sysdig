@@ -32,6 +32,13 @@ jobs:
       - uses: hmarr/debug-action@v3
       - uses: actions/checkout@v4
 
+      - name: Install CLI tools from OpenShift Mirror
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          source: "mirror"
+          kam: "latest"
+          oc: "4"
+
       - name: Authenticate and set context
         uses: redhat-actions/oc-login@v1
         with:
