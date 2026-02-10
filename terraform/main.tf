@@ -12,3 +12,8 @@ module "e4ca1d-team" {
   source                   = "./gold-e4ca1d-team"
   sysdig_monitor_api_token = var.gold_e4ca1d_team_sysdig_monitor_api_token
 }
+
+module "b29129-team" {
+  source                   = "./gold-b29129-team"
+  sysdig_monitor_api_token = var.gold_b29129_team_sysdig_monitor_api_token
+}
