@@ -8,7 +8,7 @@ users:
     role: ROLE_TEAM_MANAGER
   - name: tzhang200@gmail.com
     role: ROLE_TEAM_MANAGER
-  - name: nithinshekar.kuruba@gmail.com
+  - name: nithinshekar.kuruba@gov.bc.ca
     role: ROLE_TEAM_MANAGER
   - name: bcgov.sso@gov.bc.ca
     role: ROLE_TEAM_MANAGER
