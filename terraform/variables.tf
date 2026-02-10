@@ -9,3 +9,7 @@ variable "gold_eb75ad_team_sysdig_monitor_api_token" {
 variable "gold_e4ca1d_team_sysdig_monitor_api_token" {
   description = "The Sysdig Monitor API token in e4ca1d-team workspace"
 }
+
+variable "gold_b29129_team_sysdig_monitor_api_token" {
+  description = "The Sysdig Monitor API token in b29129-team workspace"
+}
