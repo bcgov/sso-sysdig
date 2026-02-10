@@ -4,7 +4,9 @@
 
 This repository includes `Helm` charts to deploy the `sysdig-team custom resource` for the BCGov Openshift `Sysdig Team Operator` and `Terraform` scripts to provision `Sysdig` alerts and dashboards in the following Sysdig workspaces.
 
+- b29129-team
 - c6af30-team
+- e4ca1d-team
 - eb75ad-team
 
 ## Purpose

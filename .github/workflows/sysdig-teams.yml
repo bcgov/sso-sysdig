@@ -25,6 +25,9 @@ jobs:
           - host: https://api.gold.devops.gov.bc.ca:6443
             plate: e4ca1d
             token: GOLD_E4CA1D_OPENSHIFT_TOKEN
+          - host: https://api.gold.devops.gov.bc.ca:6443
+            plate: b29129
+            token: GOLD_B29129_OPENSHIFT_TOKEN
     steps:
       - uses: hmarr/debug-action@v3
       - uses: actions/checkout@v4
