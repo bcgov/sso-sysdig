@@ -39,7 +39,6 @@ jobs:
               backend "kubernetes" {
               secret_suffix    = "sysdig-state"
               namespace = "e4ca1d-tools"
-              config_path      = "~/.kube/config"
               host = "${{ secrets.OPENSHIFT_SERVER_GOLD }}"
               token = "${{ secrets.OPENSHIFT_TOKEN_GOLD }}"
 
