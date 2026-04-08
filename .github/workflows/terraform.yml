@@ -35,14 +35,14 @@ jobs:
       - name: Terraform Variables
         run: |
           cat >"config.tf" <<EOF
-          terraform {
-            backend "s3" {
-              bucket     = "xgr00q-prod-sysdig"
-              key        = "sysdig"
-              region     = "ca-central-1"
-              access_key = "${{ secrets.TF_ACCESS_KEY }}"
-              secret_key = "${{ secrets.TF_SECRET_KEY }}"
-              role_arn   = "${{ secrets.TF_ROLE_ARN }}"
+            terraform {
+              backend "kubernetes" {
+              secret_suffix    = "sysdig-state"
+              namespace = "e4ca1d-tools"
+              config_path      = "~/.kube/config"
+              host = "${{ secrets.OPENSHIFT_SERVER_GOLD }}"
+              token = "${{ secrets.OPENSHIFT_TOKEN_GOLD }}"
+
             }
           }
           EOF
