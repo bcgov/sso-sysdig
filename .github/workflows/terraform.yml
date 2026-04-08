@@ -31,7 +31,7 @@ jobs:
       - name: Login Openshift Gold & Golddr
         uses: ./.github/actions/oc-login
         with:
-          namespace: $NAMESPACE
+          namespace: "e4ca1d-tools"
           oc-server-gold: ${{ secrets.OPENSHIFT_SERVER_GOLD }}
           oc-token-gold: ${{ secrets.OPENSHIFT_TOKEN_GOLD }}
       - name: Setup Terraform
