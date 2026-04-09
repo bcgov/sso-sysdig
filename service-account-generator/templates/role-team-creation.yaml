@@ -1,0 +1,34 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: sysdig-team-creator-role-template
+objects:
+  - kind: Role
+    apiVersion: authorization.openshift.io/v1
+    metadata:
+      name: sysdig-team-creator-${NAMESPACE}
+      namespace: ${NAMESPACE}
+      labels:
+        created-by: local
+        role: team-creation
+      annotations:
+        openshift.io/description: deployer
+        openshift.io/reconcile-protect: 'false'
+    rules:
+      - verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+        attributeRestrictions: null
+        apiGroups:
+          - ops.gov.bc.ca
+        resources:
+          - sysdig-teams
+
+parameters:
+- name: NAMESPACE
+  required: true
+  description: the namespace the role is built in
