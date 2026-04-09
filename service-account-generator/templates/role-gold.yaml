@@ -1,0 +1,57 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: sysdig-terraform-deployer-role-template
+objects:
+  - kind: Role
+    apiVersion: authorization.openshift.io/v1
+    metadata:
+      name: sysdig-terraform-deployer-${NAMESPACE}
+      namespace: ${NAMESPACE}
+      labels:
+        created-by: local
+        role: deployer
+      annotations:
+        openshift.io/description: deployer
+        openshift.io/reconcile-protect: 'false'
+    rules:
+      - verbs:
+          - create
+          - delete
+          - deletecollection
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        attributeRestrictions: null
+        apiGroups:
+          - ''
+        resources:
+          - configmaps
+          - secrets
+      - verbs:
+          - get
+          - list
+        attributeRestrictions: null
+        apiGroups:
+          - project.openshift.io
+        resources:
+          - projects
+      - verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+        attributeRestrictions: null
+        apiGroups:
+          - ops.gov.bc.ca
+        resources:
+          - sysdig-teams
+
+parameters:
+- name: NAMESPACE
+  required: true
+  description: the namespace the role is built in
