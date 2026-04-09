@@ -16,18 +16,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - host: https://api.gold.devops.gov.bc.ca:6443
-            plate: c6af30
-            token: GOLD_C6AF30_OPENSHIFT_TOKEN
-          - host: https://api.gold.devops.gov.bc.ca:6443
-            plate: eb75ad
-            token: GOLD_EB75AD_OPENSHIFT_TOKEN
-          - host: https://api.gold.devops.gov.bc.ca:6443
-            plate: e4ca1d
-            token: GOLD_E4CA1D_OPENSHIFT_TOKEN
-          - host: https://api.gold.devops.gov.bc.ca:6443
-            plate: b29129
-            token: GOLD_B29129_OPENSHIFT_TOKEN
+          - plate: c6af30
+          - plate: eb75ad
+          - plate: e4ca1d
+          - plate: b29129
     steps:
       - uses: hmarr/debug-action@v3
       - uses: actions/checkout@v4
@@ -39,11 +31,11 @@ jobs:
           kam: "latest"
           oc: "4"
 
-      - name: Authenticate and set context
-        uses: redhat-actions/oc-login@v1
+      - name: Login Openshift Gold
+        uses: ./.github/actions/oc-login
         with:
-          openshift_server_url: ${{ matrix.host }}
-          openshift_token: ${{ secrets[matrix.token] }}
+          openshift_server_url: ${{ secrets.OPENSHIFT_SERVER_GOLD }}
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN_GOLD }}
           namespace: ${{ matrix.plate }}-tools
           insecure_skip_tls_verify: true
 
