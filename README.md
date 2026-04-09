@@ -28,18 +28,14 @@ The Helm chart defines the `Sysdig Team Members` in `c6af30` and `eb75ad` projec
 The Terraform script defines the `alerts` and `dashboard` configuration of the `Sysdig Workspaces` in `c6af30` and `eb75ad` projects in the Gold cluster. Terraform runs in the following two GitHub events on Github Actions CI/CD pipelines:
 
 - `pull request on main branch`: it runs `Terraform Plan` to creates an execution plan, which lets you preview the changes in the PR.
-- `merge into main branch`: it runs `Terraform Apply` to apply the changes; the Terraform state is stored in a AWS S3 bucket `xgr00q-prod-sysdig`.
-- see [Terraform GitHub Actions](.github/workflows/terraform.yml)
+- `merge into main branch`: it runs `Terraform Apply` to apply the changes; the Terraform state is stored in a an openshift secret in e4ca1d-tools.
+- see [Terraform GitHub Actions](.github/workflows/terraform.yml). The github action requires a service account that can be generated using the [service-account-generator](service-account-generator/README.md)
 
 ### Usage
 
 In order to run the Terraform scripts locally, it requires:
 
-- `AWS Credentials`
-
-  1. Log into [`Cloud Pathfinder AWS LZ2 Portal`](https://oidc.gov.bc.ca/auth/realms/umafubc9/protocol/saml/clients/amazon-aws).
-  1. Choose `xgr00q-prod` and `Click for Credentials`.
-  1. Copy the AWS credentials and pastes into the local workspace.
+- Being logged into the openshift cluster.
 
 - TF variable file `terraform.tfvars` with sysdig tokens.
 
@@ -50,6 +46,8 @@ cd terraform
 cat >"terraform.tfvars" <<EOF
 gold_c6af30_team_sysdig_monitor_api_token=<sysdig_token1>
 gold_eb75ad_team_sysdig_monitor_api_token=<sysdig_token2>
+gold_b29129_team_sysdig_monitor_api_token=<sysdig_token3>
+gold_e4ca1d_team_sysdig_monitor_api_token=<sysdig_token4>
 EOF
 terraform init
 terraform apply

@@ -31,6 +31,16 @@ objects:
           - configmaps
           - secrets
       - verbs:
+          - create
+          - delete
+          - get
+          - update
+        attributeRestrictions: null
+        apiGroups:
+          - coordination.k8s.io
+        resources:
+          - leases
+      - verbs:
           - get
           - list
         attributeRestrictions: null
