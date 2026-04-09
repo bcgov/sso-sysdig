@@ -22,6 +22,18 @@ jobs:
       - uses: hmarr/debug-action@v3
       - uses: actions/checkout@v4
 
+      - name: Install CLI tools from OpenShift Mirror
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          source: "mirror"
+          kam: "latest"
+          oc: "4"
+      - name: Login Openshift Gold & Golddr
+        uses: ./.github/actions/oc-login
+        with:
+          namespace: "e4ca1d-tools"
+          oc-server-gold: ${{ secrets.OPENSHIFT_SERVER_GOLD }}
+          oc-token-gold: ${{ secrets.OPENSHIFT_TOKEN_GOLD }}
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
@@ -35,14 +47,13 @@ jobs:
       - name: Terraform Variables
         run: |
           cat >"config.tf" <<EOF
-          terraform {
-            backend "s3" {
-              bucket     = "xgr00q-prod-sysdig"
-              key        = "sysdig"
-              region     = "ca-central-1"
-              access_key = "${{ secrets.TF_ACCESS_KEY }}"
-              secret_key = "${{ secrets.TF_SECRET_KEY }}"
-              role_arn   = "${{ secrets.TF_ROLE_ARN }}"
+            terraform {
+              backend "kubernetes" {
+              secret_suffix    = "sysdig-state"
+              namespace = "e4ca1d-tools"
+              config_path      = "~/.kube/config"
+
+
             }
           }
           EOF
