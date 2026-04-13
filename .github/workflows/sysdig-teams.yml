@@ -30,14 +30,12 @@ jobs:
           source: "mirror"
           kam: "latest"
           oc: "4"
-
       - name: Login Openshift Gold
         uses: ./.github/actions/oc-login
         with:
-          openshift_server_url: ${{ secrets.OPENSHIFT_SERVER_GOLD }}
-          openshift_token: ${{ secrets.OPENSHIFT_TOKEN_GOLD }}
           namespace: ${{ matrix.plate }}-tools
-          insecure_skip_tls_verify: true
+          oc-server-gold: ${{ secrets.OPENSHIFT_SERVER_GOLD }}
+          oc-token-gold: ${{ secrets.OPENSHIFT_TOKEN_GOLD }}
 
       - name: Deploy Sysdig Team via Helm chart
         run: ./deploy-${{ matrix.plate }}.sh
