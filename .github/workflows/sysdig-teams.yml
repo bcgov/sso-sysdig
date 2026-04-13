@@ -1,6 +1,7 @@
 name: Deploy Sysdig Teams via Helm Chart
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -39,6 +40,6 @@ jobs:
           namespace: ${{ matrix.plate }}-tools
           insecure_skip_tls_verify: true
 
-      - name: Deploy Sysdig Team via Helm chart
-        run: ./deploy-${{ matrix.plate }}.sh
+      - name: Deploy Sysdig Team via oc
+        run: oc -n ${{ matrix.plate }}-tools process -f sysdig-team.yaml -p PROJECT=${{ matrix.plate }} | oc -n ${{ matrix.plate }}-tools apply -f -
         working-directory: ./sysdig-teams

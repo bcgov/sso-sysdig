@@ -203,7 +203,7 @@ resource "sysdig_monitor_alert_promql" "prod_backup_storage_pv_usage_gt_med" {
   description = "This Backup PVC is filling up."
   severity    = 4
   enabled     = true
-  promql      = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"sso-backup-storage-backup-pvc\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"sso-backup-storage-backup-pvc\"}) by (persistentvolumeclaim) > 85"
+  promql      = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"sso-backup-storage-18-backup-pvc\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-prod\", persistentvolumeclaim=~\"sso-backup-storage-18-backup-pvc\"}) by (persistentvolumeclaim) > 85"
 
   trigger_after_minutes = 2
 
@@ -219,7 +219,7 @@ resource "sysdig_monitor_alert_promql" "dev_backup_storage_pv_usage_gt_med" {
   severity    = 4
   enabled     = true
 
-  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"sso-backup-storage-backup-pvc\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"sso-backup-storage-backup-pvc\"}) by (persistentvolumeclaim) > 85"
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"sso-backup-storage-18-backup-pvc\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-dev\", persistentvolumeclaim=~\"sso-backup-storage-18-backup-pvc\"}) by (persistentvolumeclaim) > 85"
   trigger_after_minutes = 2
 
   notification_channels = [132277, 57336, 57341]
@@ -234,7 +234,7 @@ resource "sysdig_monitor_alert_promql" "test_backup_storage_pv_usage_gt_med" {
   severity    = 4
   enabled     = true
 
-  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"sso-backup-storage-backup-pvc\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"sso-backup-storage-backup-pvc\"}) by (persistentvolumeclaim) > 85"
+  promql                = "avg(kubelet_volume_stats_used_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"sso-backup-storage-18-backup-pvc\"}*100 / kubelet_volume_stats_capacity_bytes{namespace=\"eb75ad-test\", persistentvolumeclaim=~\"sso-backup-storage-18-backup-pvc\"}) by (persistentvolumeclaim) > 85"
   trigger_after_minutes = 2
 
   notification_channels = [132277, 57336, 57341]
@@ -525,47 +525,48 @@ resource "sysdig_monitor_alert_v2_change" "prod_pvcuse_spike" {
 
 }
 
-resource "sysdig_monitor_alert_promql" "dev_http_request_latency" {
-  name        = "[GOLD DEV] Higher than normal response time detected"
-  description = "The dev keycloak latency is elevated"
-  severity    = 4
-  enabled     = true
+## These response time metrics no longer work for keycloak stateful sets
+# resource "sysdig_monitor_alert_promql" "dev_http_request_latency" {
+#   name        = "[GOLD DEV] Higher than normal response time detected"
+#   description = "The dev keycloak latency is elevated"
+#   severity    = 4
+#   enabled     = true
 
-  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-dev\",kube_statefulset_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 200000000"
-  trigger_after_minutes = 15
+#   promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-dev\",kube_statefulset_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 200000000"
+#   trigger_after_minutes = 15
 
-  notification_channels = [132277]
-  custom_notification {
-    title = "{{__alert_name__}} is {{__alert_status__}}"
-  }
-}
+#   notification_channels = [132277]
+#   custom_notification {
+#     title = "{{__alert_name__}} is {{__alert_status__}}"
+#   }
+# }
 
-resource "sysdig_monitor_alert_promql" "prod_http_request_latency" {
-  name        = "[GOLD PROD] Higher than normal response time detected"
-  description = "The prod keycloak latency is elevated"
-  severity    = 4
-  enabled     = true
+# resource "sysdig_monitor_alert_promql" "prod_http_request_latency" {
+#   name        = "[GOLD PROD] Higher than normal response time detected"
+#   description = "The prod keycloak latency is elevated"
+#   severity    = 4
+#   enabled     = true
 
-  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-prod\",kube_statefulset_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 300000000"
-  trigger_after_minutes = 15
+#   promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-prod\",kube_statefulset_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 300000000"
+#   trigger_after_minutes = 15
 
-  notification_channels = [132277]
-  custom_notification {
-    title = "{{__alert_name__}} is {{__alert_status__}}"
-  }
-}
+#   notification_channels = [132277]
+#   custom_notification {
+#     title = "{{__alert_name__}} is {{__alert_status__}}"
+#   }
+# }
 
-resource "sysdig_monitor_alert_promql" "test_http_request_latency" {
-  name        = "[GOLD TEST] Higher than normal response time detected"
-  description = "The test keycloak latency is elevated"
-  severity    = 4
-  enabled     = true
+# resource "sysdig_monitor_alert_promql" "test_http_request_latency" {
+#   name        = "[GOLD TEST] Higher than normal response time detected"
+#   description = "The test keycloak latency is elevated"
+#   severity    = 4
+#   enabled     = true
 
-  promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-test\",kube_statefulset_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 200000000"
-  trigger_after_minutes = 15
+#   promql                = "avg(avg_over_time(sysdig_container_net_http_request_time{kube_cluster_name=~\"gold\",kube_namespace_name=~\"eb75ad-test\",kube_statefulset_name=~\"sso-keycloak\"}[300s])) by (kube_cluster_name, kube_namespace_name, kube_workload_type, kube_workload_name, kube_pod_name, container_label_io_kubernetes_container_name) > 200000000"
+#   trigger_after_minutes = 15
 
-  notification_channels = [132277]
-  custom_notification {
-    title = "{{__alert_name__}} is {{__alert_status__}}"
-  }
-}
+#   notification_channels = [132277]
+#   custom_notification {
+#     title = "{{__alert_name__}} is {{__alert_status__}}"
+#   }
+# }

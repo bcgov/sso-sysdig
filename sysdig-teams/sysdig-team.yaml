@@ -1,0 +1,31 @@
+# see https://developer.gov.bc.ca/OpenShift-User-Guide-to-Creating-and-Using-a-Sysdig-Team-for-Monitoring#sample-sysdig-team-object
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: sysdigteam-template
+objects:
+  - apiVersion: ops.gov.bc.ca/v1alpha1
+    kind: SysdigTeam
+    metadata:
+      name: ${PROJECT}-sysdigteams
+      namespace: ${PROJECT}-tools
+    spec:
+      team:
+        description: The Sysdig Team for ${PROJECT}
+        users:
+          - name: arcshiftsolutions@gmail.com
+            role: ROLE_TEAM_MANAGER
+          - name: jonathan.sharman@gov.bc.ca
+            role: ROLE_TEAM_MANAGER
+          - name: tzhang200@gmail.com
+            role: ROLE_TEAM_MANAGER
+          - name: nithinshekar.kuruba@gov.bc.ca
+            role: ROLE_TEAM_MANAGER
+          - name: bcgov.sso@gov.bc.ca
+            role: ROLE_TEAM_MANAGER
+          - name: jonathan.langlois@gov.bc.ca
+            role: ROLE_TEAM_MANAGER
+parameters:
+  - name: PROJECT
+    description: namespace set to deploy sysdig team
+    required: true
