@@ -22,11 +22,27 @@ objects:
           - list
           - patch
           - update
+          - watch
         attributeRestrictions: null
         apiGroups:
           - ops.gov.bc.ca
         resources:
           - sysdig-teams
+
+      # Helm release metadata
+      - apiGroups: [""]
+        resources:
+          - secrets
+        verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+
+
 
 parameters:
 - name: NAMESPACE
