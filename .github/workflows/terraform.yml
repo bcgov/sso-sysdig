@@ -28,7 +28,7 @@ jobs:
           source: "mirror"
           kam: "latest"
           oc: "4"
-      - name: Login Openshift Gold & Golddr
+      - name: Login Openshift Gold
         uses: ./.github/actions/oc-login
         with:
           namespace: "e4ca1d-tools"
