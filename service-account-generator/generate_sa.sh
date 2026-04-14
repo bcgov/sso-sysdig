@@ -58,7 +58,7 @@ create_team_role_and_binding() {
 
   oc -n "$namespace" create rolebinding sysdig-team-creator-role-binding-"$namespace"   \
   --role=sysdig-team-creator-"$namespace" \
-  --serviceaccount=e4ca1d-tools:sysdig-terraform-deployer-"$licence_plate"
+  --serviceaccount=e4ca1d-tools:sysdig-terraform-deployer-e4ca1d
 }
 
 # # for tools create the role and role binding
