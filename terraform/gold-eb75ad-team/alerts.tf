@@ -72,6 +72,24 @@ resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_sustained" {
   }
 }
 
+resource "sysdig_monitor_alert_metric" "prod_keycloak_cpu_usage_sustained_long" {
+  name        = "[GOLD CUST PROD] Keycloak - Sustained Elevated CPU LONG"
+  description = "When the CPU is elevated for a very long period of time the team needs to fix it."
+  severity    = 2
+  enabled     = true
+
+  metric                = "max(avg(sysdig_container_cpu_cores_used)) >= 1.50"
+  trigger_after_minutes = 90
+
+  scope              = "kubernetes.cluster.name in (\"gold\") and kubernetes.namespace.name in (\"eb75ad-prod\") and kubernetes.statefulset.name in (\"sso-keycloak\")"
+  multiple_alerts_by = []
+
+  notification_channels = [132277, 57336, 57341]
+  custom_notification {
+    title = "{{__alert_name__}} is {{__alert_status__}}"
+  }
+}
+
 resource "sysdig_monitor_alert_metric" "prod_keycloak_pods_high" {
   name        = "[GOLD CUST PROD] SSO - Ready Pods High"
   description = ""
