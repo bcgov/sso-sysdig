@@ -428,3 +428,1113 @@ resource "sysdig_monitor_dashboard" "general_pod_performance" {
 
 
 }
+
+resource "sysdig_monitor_dashboard" "sso_cache" {
+  name = "SSO Cache"
+
+  share {
+    role = "ROLE_RESOURCE_EDIT"
+    member {
+      type = "TEAM"
+      id   = 40193
+    }
+  }
+
+  scope {
+    metric     = "cache"
+    comparator = "in"
+    value      = ["sessions"]
+  }
+
+  scope {
+    metric     = "cache_manager"
+    comparator = "in"
+    value      = ["keycloak"]
+  }
+
+  scope {
+    metric     = "kubernetes.namespace.name"
+    comparator = "in"
+    value      = ["eb75ad-prod"]
+  }
+
+  scope {
+    metric     = "kubernetes.pod.name"
+    comparator = "in"
+    value      = ["sso-keycloak-0", "sso-keycloak-1", "sso-keycloak-2"]
+  }
+
+  panel {
+    pos_x  = 0
+    pos_y  = 0
+    width  = 6
+    height = 6
+    type   = "timechart"
+    name   = "Cache Unique Entries by Pod"
+
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+
+    query {
+      promql = "sum by (kube_pod_name)(vendor_statistics_approximate_entries_unique{$__scope})"
+      unit   = "number"
+
+      display_info {
+        display_name                      = "Stored Unique Entries"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "1"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+
+  panel {
+    pos_x  = 6
+    pos_y  = 0
+    width  = 6
+    height = 6
+    type   = "timechart"
+    name   = "Cache All Entries by Pod"
+
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+
+    query {
+      promql = "sum by (kube_pod_name)(vendor_statistics_approximate_entries{$__scope})"
+      unit   = "number"
+
+      display_info {
+        display_name                      = "All Stored Entries"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "1"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+
+  panel {
+    pos_x  = 12
+    pos_y  = 0
+    width  = 6
+    height = 6
+    type   = "timechart"
+    name   = "Cache Write Operations Rate by Pod"
+
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+
+    query {
+      promql = "sum by (kube_pod_name)(rate(vendor_statistics_store_times_seconds_count{$__scope}[$__interval]))"
+      unit   = "number rate"
+
+      display_info {
+        display_name                      = "Write Operations Rate"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+
+  panel {
+    pos_x  = 18
+    pos_y  = 0
+    width  = 6
+    height = 6
+    type   = "timechart"
+    name   = "Cache Eviction Rate by Pod"
+
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+
+    query {
+      promql = "sum by (kube_pod_name)(rate(vendor_statistics_evictions{$__scope}[$__interval]))"
+      unit   = "number rate"
+
+      display_info {
+        display_name                      = "Eviction Rate"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+
+  panel {
+    pos_x  = 0
+    pos_y  = 6
+    width  = 6
+    height = 6
+    type   = "timechart"
+    name   = "Cache Read Miss Rate by Pod"
+
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+
+    query {
+      promql = "sum by (kube_pod_name)(rate(vendor_statistics_miss_times_seconds_count{$__scope}[$__interval]))"
+      unit   = "number rate"
+
+      display_info {
+        display_name                      = "Read Miss Rate"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+
+  panel {
+    pos_x  = 6
+    pos_y  = 6
+    width  = 6
+    height = 6
+    type   = "timechart"
+    name   = "Cache Hit Percentage by Pod"
+
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+
+    query {
+      promql = chomp(<<-EOT
+        100 * (sum by (kube_pod_name) (
+          rate(vendor_statistics_hit_times_seconds_count{
+            $__scope
+          }[$__interval])
+        )
+        /
+        (
+          sum by (kube_pod_name) (
+            rate(vendor_statistics_hit_times_seconds_count{
+              $__scope
+            }[$__interval])
+          )
+          +
+          sum by (kube_pod_name) (
+            rate(vendor_statistics_miss_times_seconds_count{
+              $__scope
+            }[$__interval])
+          )
+        )
+        )
+      EOT
+      )
+      unit = "percent"
+
+      display_info {
+        display_name                      = "Hit Percentage"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "0-100"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+
+  panel {
+    pos_x       = 12
+    pos_y       = 6
+    width       = 6
+    height      = 6
+    type        = "timechart"
+    name        = "Cache Write Operations Average Duration"
+    description = "The average duration of a cache store operation across all selected pods/caches."
+
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+
+    query {
+      promql = chomp(<<-EOT
+        sum(rate(vendor_statistics_store_times_seconds_sum{$__scope}[$__range]))
+        /
+        sum(rate(vendor_statistics_store_times_seconds_count{$__scope}[$__range]))
+      EOT
+      )
+      unit = "time"
+
+      display_info {
+        display_name                      = "Average Time"
+        time_series_display_name_template = "sso-keycloak"
+        type                              = "lines"
+      }
+
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+
+  panel {
+    pos_x  = 18
+    pos_y  = 6
+    width  = 6
+    height = 6
+    type   = "timechart"
+    name   = "Cache Read Operations Rate by Pod"
+
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+
+    query {
+      promql = chomp(<<-EOT
+        sum by (kube_pod_name)(
+          rate(vendor_statistics_hit_times_seconds_count{$__scope}[$__interval])
+        + rate(vendor_statistics_miss_times_seconds_count{$__scope}[$__interval])
+        )
+      EOT
+      )
+      unit = "number rate"
+
+      display_info {
+        display_name                      = "Read Operations Rate"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+
+  panel {
+    pos_x  = 0
+    pos_y  = 12
+    width  = 6
+    height = 6
+    type   = "timechart"
+    name   = "Cache Remove Operations Rate by Pod"
+
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+
+    query {
+      promql = chomp(<<-EOT
+        sum by (kube_pod_name)(
+          rate(vendor_statistics_remove_hit_times_seconds_count{$__scope}[$__interval])
+        + rate(vendor_statistics_remove_miss_times_seconds_count{$__scope}[$__interval])
+        )
+      EOT
+      )
+      unit = "number rate"
+
+      display_info {
+        display_name                      = "Cache Removal Rate"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+
+  panel {
+    pos_x  = 6
+    pos_y  = 12
+    width  = 6
+    height = 6
+    type   = "timechart"
+    name   = "Cache Removal Hit to Miss Ratio by Pod"
+
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+
+    query {
+      promql = chomp(<<-EOT
+        100 *
+        sum by (kube_pod_name) (
+          rate(
+            vendor_statistics_remove_hit_times_seconds_count{      $__scope
+            }[$__interval]
+          )
+        )
+        /
+        (
+          sum by (kube_pod_name) (
+            rate(
+              vendor_statistics_remove_hit_times_seconds_count{
+                $__scope
+              }[$__interval]
+            )
+          )
+          +
+          sum by (kube_pod_name) (
+            rate(
+              vendor_statistics_remove_miss_times_seconds_count{
+                $__scope
+              }[$__interval]
+            )
+          )
+        )
+      EOT
+      )
+      unit = "percent"
+
+      display_info {
+        display_name                      = "cache remove hit ratio"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "0-100"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+
+  panel {
+    pos_x  = 12
+    pos_y  = 12
+    width  = 6
+    height = 6
+    type   = "timechart"
+    name   = "Cache Removal Rate by Pod"
+
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+
+    query {
+      promql = "sum by (kube_pod_name)(rate(vendor_statistics_remove_miss_times_seconds_count{$__scope}[$__interval]))"
+      unit   = "number rate"
+
+      display_info {
+        display_name                      = "Cache Removal Rate"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+
+  panel {
+    pos_x  = 18
+    pos_y  = 12
+    width  = 6
+    height = 6
+    type   = "timechart"
+    name   = "Cache Removal Miss Rate by Pod"
+
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+
+    query {
+      promql = "sum by (kube_pod_name)(rate(vendor_statistics_remove_miss_times_seconds_count{$__scope}[$__interval]))"
+      unit   = "number rate"
+
+      display_info {
+        display_name                      = "Remove Miss Rate"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+}
+
+resource "sysdig_monitor_dashboard" "sso_http" {
+  name = "SSO HTTP"
+
+  panel {
+    height = 8
+    name   = "HTTP Active Requests by Pod"
+    pos_x  = 0
+    pos_y  = 8
+    type   = "timechart"
+    width  = 8
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+    query {
+      promql = "sum by (kube_pod_name)(http_server_active_requests{$__scope})"
+      unit   = "number"
+      display_info {
+        display_name                      = "Total Count"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "1"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+  panel {
+    height = 8
+    name   = "HTTP Average Request Size"
+    pos_x  = 8
+    pos_y  = 16
+    type   = "timechart"
+    width  = 8
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+    query {
+      promql = chomp(<<-EOT
+        sum(rate(http_server_bytes_read_sum{$__scope}[$__range]))
+        /
+        sum(rate(http_server_bytes_read_count{$__scope}[$__range]))
+      EOT
+      )
+      unit = "data rate"
+      display_info {
+        display_name                      = "Request Size"
+        time_series_display_name_template = "sso-keycloak"
+        type                              = "lines"
+      }
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "B/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+  panel {
+    height = 8
+    name   = "HTTP Average Response Size by Pod"
+    pos_x  = 16
+    pos_y  = 8
+    type   = "timechart"
+    width  = 8
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+    query {
+      promql = chomp(<<-EOT
+        sum by (kube_pod_name)(rate(http_server_bytes_written_sum{$__scope}[$__interval]))
+        /
+        sum by (kube_pod_name)(rate(http_server_bytes_written_count{$__scope}[$__interval]))
+      EOT
+      )
+      unit = "data rate"
+      display_info {
+        display_name                      = "Average Size"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "B/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+  panel {
+    height = 8
+    name   = "HTTP Average Response Size"
+    pos_x  = 0
+    pos_y  = 16
+    type   = "timechart"
+    width  = 8
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+    query {
+      promql = chomp(<<-EOT
+        sum(rate(http_server_bytes_written_sum{$__scope}[$__range]))
+        /
+        sum(rate(http_server_bytes_written_count{$__scope}[$__range]))
+      EOT
+      )
+      unit = "data rate"
+      display_info {
+        display_name                      = "Average Response Size"
+        time_series_display_name_template = "sso-keycloak"
+        type                              = "lines"
+      }
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "B/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+  panel {
+    height = 8
+    name   = "HTTP Average Response Time by Pod"
+    pos_x  = 0
+    pos_y  = 24
+    type   = "timechart"
+    width  = 8
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+    query {
+      promql = chomp(<<-EOT
+        sum by (kube_pod_name) (rate(vendor_jgroups_stats_sync_requests_seconds_sum{$__scope}[$__interval]))
+        /
+        sum by (kube_pod_name) (rate(vendor_jgroups_stats_sync_requests_seconds_count{$__scope}[$__interval]))
+      EOT
+      )
+      unit = "time"
+      display_info {
+        display_name                      = "Average Response Time"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+  panel {
+    height = 8
+    name   = "HTTP Message Retransmissions Rate by Pod"
+    pos_x  = 8
+    pos_y  = 24
+    type   = "timechart"
+    width  = 8
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+    query {
+      promql = "rate(vendor_jgroups_unicast3_get_num_xmits{$__scope}[$__interval])"
+      unit   = "number rate"
+      display_info {
+        display_name                      = "Retransmissions Rate"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+  panel {
+    height = 8
+    name   = "HTTP Message Send Rate"
+    pos_x  = 0
+    pos_y  = 32
+    type   = "timechart"
+    width  = 8
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+    query {
+      promql = <<-EOT
+        rate(vendor_jgroups_tcp_get_num_msgs_sent{$__scope}[$__interval])
+      EOT
+      unit   = "number rate"
+      display_info {
+        display_name                      = "Rate of Messages Sent"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+  panel {
+    height = 8
+    name   = "HTTP Messages Dropped by Pod"
+    pos_x  = 16
+    pos_y  = 24
+    type   = "timechart"
+    width  = 8
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+    query {
+      promql = "rate(vendor_jgroups_red_get_dropped_messages{$__scope}[$__interval])"
+      unit   = "number rate"
+      display_info {
+        display_name                      = "Messages Dropped Rate"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+  panel {
+    height = 8
+    name   = "HTTP Messages Received Rate"
+    pos_x  = 8
+    pos_y  = 32
+    type   = "timechart"
+    width  = 8
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+    query {
+      promql = "rate(vendor_jgroups_tcp_get_num_msgs_received{$__scope}[$__interval])"
+      unit   = "number rate"
+      display_info {
+        display_name                      = "Rate of Messages Received"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+  panel {
+    height = 8
+    name   = "HTTP Request Rate by Pod and Outcome"
+    pos_x  = 8
+    pos_y  = 8
+    type   = "timechart"
+    width  = 8
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+    query {
+      promql = "sum by (kube_pod_name, outcome)(rate(http_server_requests_seconds_count{$__scope}[$__interval]))"
+      unit   = "number rate"
+      display_info {
+        display_name                      = "Request Rate"
+        time_series_display_name_template = "{{kube_pod_name}} - {{outcome}}"
+        type                              = "lines"
+      }
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+  panel {
+    height = 8
+    name   = "HTTP Request Rate by URI and outcome"
+    pos_x  = 16
+    pos_y  = 0
+    type   = "timechart"
+    width  = 8
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+    query {
+      promql = "sum by (uri, outcome)(rate(http_server_requests_seconds_count{$__scope}[$__interval]))"
+      unit   = "number rate"
+      display_info {
+        display_name                      = "Requests Rate"
+        time_series_display_name_template = "{{uri}} - {{outcome}}"
+        type                              = "lines"
+      }
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+  panel {
+    height = 8
+    name   = "HTTP Requests Size Rate by Pod"
+    pos_x  = 16
+    pos_y  = 16
+    type   = "timechart"
+    width  = 8
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+    query {
+      promql = chomp(<<-EOT
+        sum by (kube_pod_name)(rate(http_server_bytes_read_sum{$__scope}[$__interval]))
+        /
+        sum by (kube_pod_name)(rate(http_server_bytes_read_count{$__scope}[$__interval]))
+      EOT
+      )
+      unit = "data rate"
+      display_info {
+        display_name                      = "Request Size Rate"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "B/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+  panel {
+    height = 8
+    name   = "HTTP Requests by Pod"
+    pos_x  = 0
+    pos_y  = 0
+    type   = "timechart"
+    width  = 8
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+    query {
+      promql = "sum by (kube_pod_name)(rate(http_server_requests_seconds_count{$__scope}[$__interval]))"
+      unit   = "number rate"
+      display_info {
+        display_name                      = "Request Rate"
+        time_series_display_name_template = "{{kube_pod_name}}"
+        type                              = "lines"
+      }
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+  panel {
+    height = 8
+    name   = "HTTP Requests by URI and outcome"
+    pos_x  = 8
+    pos_y  = 0
+    type   = "timechart"
+    width  = 8
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+    query {
+      promql = "sum by (uri, outcome)(http_server_requests_seconds_count{$__scope})"
+      unit   = "number"
+      display_info {
+        display_name                      = "Request Count"
+        time_series_display_name_template = "{{uri}} - {{outcome}}"
+        type                              = "lines"
+      }
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "1"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+  scope {
+    comparator = "in"
+    metric     = "kubernetes.namespace.name"
+    value = [
+      "eb75ad-prod",
+    ]
+  }
+  scope {
+    comparator = "in"
+    metric     = "kubernetes.pod.name"
+    value = [
+      "sso-keycloak-0",
+      "sso-keycloak-1",
+      "sso-keycloak-2",
+    ]
+  }
+  share {
+    role = "ROLE_RESOURCE_EDIT"
+    member {
+      id   = 40193
+      type = "TEAM"
+    }
+  }
+}
+
+resource "sysdig_monitor_dashboard" "sso_capacity_planning" {
+  name = "SSO Capacity Planning"
+
+  panel {
+    height = 7
+    name   = "Approximate memory used per unique session"
+    pos_x  = 16
+    pos_y  = 0
+    type   = "timechart"
+    width  = 8
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+    query {
+      promql = chomp(<<-EOT
+        sum(sysdig_container_memory_used_bytes{$__scope})
+        /
+        sum(vendor_statistics_approximate_entries_unique{cache="sessions", $__scope})
+      EOT
+      )
+      unit = "data"
+      display_info {
+        display_name                      = "Memory Usage"
+        time_series_display_name_template = "sso-keycloak"
+        type                              = "lines"
+      }
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "B"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+  panel {
+    height = 7
+    name   = "CPU time per login"
+    pos_x  = 8
+    pos_y  = 0
+    type   = "timechart"
+    width  = 8
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+    query {
+      promql = chomp(<<-EOT
+        sum(rate(sysdig_container_cpu_cores_used{$__scope}[$__interval]))
+        /
+        sum(rate(keycloak_user_events_total{event="login", error="", $__scope}[$__interval]))
+      EOT
+      )
+      unit = "time"
+      display_info {
+        display_name                      = "CPU Time"
+        time_series_display_name_template = "sso-keycloak"
+        type                              = "lines"
+      }
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+  panel {
+    height = 7
+    name   = "Credential Password Hashing Validation Rate by Pod"
+    pos_x  = 0
+    pos_y  = 0
+    type   = "timechart"
+    width  = 8
+    legend {
+      enabled      = true
+      layout       = "table"
+      position     = "bottom"
+      show_current = true
+    }
+    query {
+      promql = "sum by (kube_pod_name,algorithm) (rate(keycloak_credentials_password_hashing_validations_total{$__scope}[$__interval]))"
+      unit   = "number rate"
+      display_info {
+        display_name                      = "Password Hash Validation Rate"
+        time_series_display_name_template = "{{kube_pod_name}}-{{algorithm}}"
+        type                              = "lines"
+      }
+      format {
+        decimals                = 0
+        display_format          = "auto"
+        input_format            = "/s"
+        null_value_display_mode = "connectDotted"
+        y_axis                  = "auto"
+      }
+    }
+  }
+  share {
+    role = "ROLE_RESOURCE_EDIT"
+    member {
+      id   = 40193
+      type = "TEAM"
+    }
+  }
+}
